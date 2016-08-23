@@ -1,0 +1,12 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% block script %}
+    <script>
+        var PAGE = 'SEARCH';
+    </script>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'website/js/search.js' %}"></script>
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'website/styles/search.css' %}"> {% endblock %}

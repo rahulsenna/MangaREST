@@ -1,0 +1,12 @@
+{% extends 'website/base.html' %}
+
+{% load staticfiles %}
+
+{% block css %} <link rel="stylesheet" href="{% static 'website/styles/user.css' %}"/> {% endblock %}
+{% block title %}<title>Subscription | Manga Nites</title>{% endblock %}
+
+{% block script %}
+    <script>
+        var PAGE = 'SUBS';
+    </script>
+{% endblock %}

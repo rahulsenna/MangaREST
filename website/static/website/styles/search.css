@@ -1,0 +1,371 @@
+body {
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+/* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+  color: #fff;
+}
+a:link,
+a:hover,
+a:active,
+a:visited {
+  color: #fff;
+}
+div.content {
+  clear: both;
+  width: 960px;
+  margin: 0 auto;
+}
+section.search .filter {
+  padding: 10px;
+  margin-bottom: 20px;
+  background: #1d2021;
+}
+section.search .filter h2 {
+  font-size: 16px;
+  font-weight: bold;
+  float: left;
+  margin-bottom: 10px;
+}
+section.search .filter th,
+section.search .filter td {
+  padding: 2px 0;
+}
+section.search .filter th {
+  padding-right: 10px;
+  text-align: right;
+  vertical-align: top;
+  white-space: nowrap;
+  width: 110px;
+}
+section.search .filter th label {
+  font-size: 13px;
+  line-height: 25px;
+}
+section.search .filter td {
+  width: 850px;
+}
+section.search .filter td label {
+  margin-right: 5px;
+}
+section.search .filter td label input.radio {
+  vertical-align: middle;
+  display: inline-block;
+}
+section.search .filter .search {
+  float: left;
+  width: 278px;
+  border: 1px solid #ccc;
+  background: #fff;
+  height: 24px;
+  padding: 0 5px 0 5px;
+  outline-color: transparent;
+/*
+  -moz-border-radius: 8px;
+  -khtml-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+*/
+}
+section.search .filter .search input,
+section.search .filter .search select {
+  float: left;
+  border: 0 none;
+  background: #fff;
+  outline-color: transparent;
+}
+section.search .filter .search input {
+  border: 0 none;
+  height: 24px;
+  line-height: 24px;
+  width: 192px;
+  text-indent: 5px;
+  outline-color: transparent;
+}
+section.search .filter .search-submit {
+  cursor: pointer;
+  float: left;
+  width: 70px;
+  height: 26px;
+  border: 1px solid #ccc;
+  border-left: none;
+  padding-left: 16px;
+}
+section.search .filter .search.quantity {
+  width: 30px;
+}
+section.search .filter .search.quantity.txt {
+  width: 60px;
+  border: none;
+  background: transparent;
+  line-height: 26px;
+  text-align: center;
+}
+section.search .filter .search.quantity input {
+  width: 30px;
+  text-align: center;
+  text-indent: 0;
+}
+section.search .filter .option {
+  float: left;
+  height: 25px;
+  line-height: 25px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+section.search .filter .reset {
+  float: left;
+  height: 25px;
+  line-height: 25px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+section.search .filter .types li {
+  white-space: nowrap;
+  overflow: hidden;
+  float: left;
+  width: 138px;
+}
+section.search .filter .status li {
+  white-space: nowrap;
+  overflow: hidden;
+  float: left;
+  width: 138px;
+}
+section.search .filter .genres li {
+  white-space: nowrap;
+  overflow: hidden;
+  float: left;
+  width: 138px;
+}
+section.search .filter .genres-mode li {
+  white-space: nowrap;
+  overflow: hidden;
+  float: left;
+  width: 276px;
+}
+section.search .filter .years li {
+  white-space: nowrap;
+  overflow: hidden;
+  float: left;
+  width: 58px;
+}
+section.search .filter .rating li {
+  white-space: nowrap;
+  overflow: hidden;
+  float: left;
+  width: 80px;
+}
+section.search .filter .chapters li {
+  white-space: nowrap;
+  overflow: hidden;
+  float: left;
+  width: 60px;
+}
+section.search .filter .triploid li span {
+  padding-left: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+  width: 100%;
+}
+section.search .filter .triploid li span.include {
+  background: url("../assets/genre-include.png") no-repeat;
+}
+section.search .filter .triploid li span.exclude {
+  background: url("../assets/genre-exclude.png") no-repeat;
+}
+section.search .filter .triploid li span.either {
+  background: url("../assets/genre-either.png") no-repeat;
+}
+section.search .filter .seled {
+  border-top: 1px dashed #d0d8dc;
+}
+section.search .filter .seled th,
+section.search .filter .seled td {
+  padding-top: 10px;
+}
+section.search .filter .cnds {
+  font-weight: bold;
+}
+section.search .filter .cnds a {
+  display: inline-block;
+  color: #000;
+  background: #ebc18f;
+  padding: 2px 8px 2px 5px;
+  margin: 0 1px 5px 0;
+  text-decoration: none;
+  -moz-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+section.search .filter .cnds a em {
+  padding: 0 3px 1px 3px;
+  margin-right: 5px;
+  -moz-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+section.search .filter .cnds a:hover em {
+  background: #f00;
+}
+.manga-list .item {
+  position: relative;
+  display: table;
+  zoom: 1;
+  width: 100%;
+  margin: 0 0 20px 0;
+  padding: 0 0 20px 0;
+  vertical-align: top;
+  border-bottom: 1px dashed #2a2d2f;
+}
+.manga-list .item.first {
+  margin-top: 20px;
+}
+.manga-list .item table {
+  width: 100%;
+}
+.manga-list .item td {
+  vertical-align: top;
+  position: relative;
+}
+.manga-list .item .cover img {
+  padding: 5px;
+  border: 1px solid rgba(102,102,102,0.41);
+  background: url("../img/loading.gif") no-repeat center center transparent;
+  background-color: #2a2d2f;
+}
+.manga-list .item b.rank {
+  color: #bbb;
+  padding: 0 5px;
+  margin-left: 5px;
+}
+.manga-list .item em.icon {
+  padding-left: 24px;
+  background-position: 0 -658px;
+}
+.manga-list .item.cmp em.icon {
+  background-position: 0 -568px;
+}
+.manga-list .item .rate {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 60px;
+}
+.manga-list .item .info {
+  line-height: 1.2em;
+  background: #1d2021;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+.manga-list .item .info .field {
+  border-bottom: 1px dotted #2a2d2f;
+  line-height: 2em;
+}
+.manga-list .item .info .field.last {
+  border-bottom: none;
+}
+.manga-list .item .info .field b {
+  margin-right: 5px;
+  color: #666;
+}
+.manga-list .item .info .field b.pd {
+  margin-left: 10px;
+}
+.manga-list .item ul {
+  margin-top: 10px;
+}
+.manga-list .item li:hover {
+  background: #fff9eb;
+}
+.manga-list .item li span {
+  display: inline-block;
+}
+.manga-list .item li i {
+  float: right;
+  color: #666;
+  font-size: 9px;
+  margin-left: 5px;
+}
+.manga-list .item h2 {
+  margin-bottom: 10px;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+.manga-list .item h3 {
+  line-height: 2.2em;
+  font-size: 1.1em;
+}
+.manga-list .item font.highlight {
+  color: #f00;
+  background: #ff0;
+  font-weight: bold;
+}
+.manga-list .item.hot h2 a {
+  color: #ff0084;
+}
+.manga-list .item.new h2 a {
+  color: #37a51d;
+}
+#pagination {
+  float: right;
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 4px;
+  padding: 1px 2px 4px 2px;
+  border-top: 1px solid #2a2d2f;
+  border-bottom: 1px solid #2a2d2f;
+  background-color: #2a2d2f;
+  background-image: -webkit-linear-gradient(top, #16191b, #303335);
+  background-image: -moz-linear-gradient(top, #16191b, #303335);
+  background-image: -ms-linear-gradient(top, #16191b, #303335);
+  background-image: -o-linear-gradient(top, #16191b, #303335);
+  background-image: linear-gradient(top, #16191b, #303335);
+}
+#pagination a,
+#pagination i {
+  display: inline-block;
+  vertical-align: middle;
+  width: 67px;
+  color: #7d7d7d;
+  text-align: center;
+  font-size: 10px;
+  padding: 3px 0 2px 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+#pagination a {
+  margin: 0 2px 0 2px;
+  border-radius: 4px;
+  border: 1px solid #16191b;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 0 #0d0f11, 0 1px 2px #292c2e;
+  text-shadow: 0 1px 1px #111618;
+  background-color: #1d2021;
+  background-image: -webkit-linear-gradient(top, #111618, #202325);
+  background-image: -moz-linear-gradient(top, #111618, #202325);
+  background-image: -ms-linear-gradient(top, #111618, #202325);
+  background-image: -o-linear-gradient(top, #111618, #202325);
+  background-image: linear-gradient(top, #111618, #202325);
+}
+#pagination i {
+  margin: 0 3px 0 3px;
+}
+#pagination a.current {
+  border: 1px solid #16191b;
+  box-shadow: 0 1px 1px #0d0f11;
+  background-color: #292c2e;
+  background-image: -webkit-linear-gradient(top, #0a0e10, #141719);
+  background-image: -moz-linear-gradient(top, #d0d0d0, #ebebeb);
+  background-image: -ms-linear-gradient(top, #d0d0d0, #ebebeb);
+  background-image: -o-linear-gradient(top, #d0d0d0, #ebebeb);
+  background-image: linear-gradient(top, #d0d0d0, #ebebeb);
+}

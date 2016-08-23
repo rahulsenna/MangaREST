@@ -1,0 +1,8 @@
+{% extends 'website/base.html' %}
+
+{% block script %}
+    <script>
+        var PAGE = 'TITLE';
+        var API = 'http://127.0.0.1:8000/api/v1/series/{{ title.id }}/';
+    </script>
+{% endblock %}

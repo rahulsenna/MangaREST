@@ -1,0 +1,11 @@
+{% extends 'website/base.html' %}
+
+{% block script %}
+    <script>
+        var PAGE = 'CHAPTER';
+        var API = 'http://127.0.0.1:8000/api/v1/series/{{ title.id }}/';
+        var CHAPTER = '{{ title.ch_title }}';
+        var SLUG = '{{ title.slug }}';
+        var IMAGES = "{{ title.images }}";
+    </script>
+{% endblock %}

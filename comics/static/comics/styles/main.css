@@ -1,0 +1,40 @@
+a:link,
+a:hover,
+a:active,
+a:visited {
+  -webkit-transition: color 150ms;
+  -moz-transition: color 150ms;
+  -ms-transition: color 150ms;
+  -o-transition: color 150ms;
+  transition: color 150ms;
+  color: #e50914;
+  text-decoration: none;
+}
+body {
+
+    background: #f3f3f3;
+    color: #333;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+header {
+    height: 5rem;
+    margin-top: -13px;
+    background-color: #fafafa;
+    border-bottom: solid 1px #dcdde0;
+
+}
+
+header ul li {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 1.4vw;
+    padding: 2.4vw 3vw;
+    position: absolute;
+    right: 0;
+}
+
+.logo img {
+    width: 10vw;
+    height: 5vw;
+}

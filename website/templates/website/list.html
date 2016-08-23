@@ -1,0 +1,13 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% block script %}
+    <script>
+        var PAGE = 'LIST';
+    </script>
+{% endblock %}
+{% block title %}<title>All Manga List | Manga Nites</title>{% endblock %}
+{% block js %}
+    <script src="{% static 'website/js/search.js' %}"></script>
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'website/styles/search.css' %}"> {% endblock %}
