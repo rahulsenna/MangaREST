@@ -369,3 +369,17 @@ section.search .filter .cnds a:hover em {
   background-image: -o-linear-gradient(top, #d0d0d0, #ebebeb);
   background-image: linear-gradient(top, #d0d0d0, #ebebeb);
 }
+@media only screen and (max-width: 970px) {
+  div.content {
+    width: 95vw;
+    font-size: 13px;
+  }
+  .manga-list .item h2 {
+    font-size: 1.1em;
+  }
+  .rate {
+    left: 0;
+    margin-top: -18px;
+    margin-left: -150px;
+  }
+}

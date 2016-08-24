@@ -140,37 +140,33 @@ header ul li a
 .logo
   padding 0
 
-#notification_li {
+#notificationLink {
   position: absolute;
   right: 0;
-  margin-right: 80px;
-
-}
-
-#notificationLink {
-  background: url('../assets/icon_bell.png') no-repeat;
-  width 31px
-  height 31px
-  margin-right 25px
-  margin-top: 16px;
-  padding 5px
+  background: url("../assets/icon_bell.png") no-repeat;
+  width: 31px;
+  height: 31px;
+  margin-right: 90px;
+  margin-top: 17px;
+  padding: 5px;
 }
 
 #notificationContainer {
-  background-color: rgba(0, 0, 0, 0.8)
-  border: 1px solid rgba(100, 100, 100, .4);
-  -webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(100, 100, 100, 0.4);
+  -webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
   overflow: visible;
   position: absolute;
   top: 53px;
-  margin-left: -18.2vw;
-  width: 25.5vw;
-  max-height 400px
+  margin-right: 20px;
+  margin-top: 20px;
+  width: 348px;
+  max-height: 400px;
   z-index: -1;
-  display: none; // Enable this after jquery implementation
+  right: 0;
+  display: none;
 }
 
-// Popup Arrow
 #notificationContainer:before {
   content: '';
   display: block;
@@ -178,21 +174,21 @@ header ul li a
   width: 0;
   height: 0;
   color: transparent;
-  border: 10px solid black;
+  border: 10px solid #000;
   border-color: transparent transparent rgba(100, 100, 100, 0.4);
   margin-top: -20px;
-  margin-left: 18.5vw;
+  margin-left: 15.2rem;
 }
 
 #notificationTitle {
   font-weight: bold;
   padding: 8px;
   font-size: 13px;
-  color #ddd
+  color: #ddd;
   background-color: #0d0f11;
-  position: fixed;
+  position: absolute;
   z-index: 1000;
-  width: 24.4vw;
+  width: 335px;
   border-bottom: 1px solid #000;
 }
 
@@ -227,17 +223,18 @@ header ul li a
 }
 
 #notification_count {
+  position: absolute;
+  right: 0;
+  margin-right: 6rem;
+  margin-top: 30px;
+  font-size: 11px;
   padding: 3px 7px 3px 7px;
-  background: #cc0000;
-  color: #ffffff;
+  background: #c00;
+  color: #fff;
   font-weight: bold;
   border-radius: 9px;
   -moz-border-radius: 9px;
   -webkit-border-radius: 9px;
-  position: absolute;
-  font-size: 11px;
-  margin-top: 30px;
-  margin-left: -48px;
 }
 
 .user
@@ -277,53 +274,47 @@ fieldset {
 .login {
   z-index: 10;
   position: absolute;
-  //width: 350px;
+  right: 0;
   display: none;
-  margin-left: 74rem;
-  margin-top: 0rem;
 }
 
 .register {
   z-index: 10;
   position: absolute;
-  //width: 350px;
   display: none;
-  margin-left: 74rem;
-  margin-top: 0rem;
+  right: 0;
 }
 
-.arrow-reg
+.arrow-reg {
   width: 0;
   height: 0;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
-  border-bottom: 15px solid #ECF0F1;
-  left: 32%;
+  border-bottom: 15px solid #ecf0f1;
   position: absolute;
   top: -15px;
-  left 6rem
+  left: 24rem;
+}
 
 .arrow-up {
   width: 0;
   height: 0;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
-  border-bottom: 15px solid #ECF0F1;
-  left: 32%;
+  border-bottom: 15px solid #ecf0f1;
   position: absolute;
   top: -15px;
+  left: 18.8rem;
 
 }
 
 .formholder {
   z-index: 10;
-  position: absolute;
   background: #ecf0f1;
   width: 448px;
   border-radius: 5px;
   padding-top: 5px;
-  padding-bottom 1.2rem
-  margin-left: -18rem;
+  padding-bottom: 1.2rem;
   margin-top: 0rem;
 }
 
@@ -339,6 +330,7 @@ input[type="email"], input[type="password"] {
   -moz-transition: 0.3s linear;
   -o-transition: 0.3s linear;
   transition: 0.3s linear;
+  background: #f4ffbd;
 }
 
 input[type="email"]:focus, input[type="password"]:focus {
@@ -817,7 +809,7 @@ input[type="submit"]:focus, input[type="submit"]:active {
   right: 0;
 
 .detailsView h1
-  width 125%
+  width 400px
   max-height 12%
   overflow hidden
   text-transform capitalize
@@ -832,7 +824,7 @@ input[type="submit"]:focus, input[type="submit"]:active {
 .detailsView p
   color #999
   font-size 0.9em
-  width 125%
+  width 500px
   max-height 5.6em
   margin-left 2em
   overflow hidden
@@ -855,7 +847,7 @@ input[type="submit"]:focus, input[type="submit"]:active {
 .titleDetails
   font-size 0.84em
   margin-left 2em
-  width 38em
+  width 400px
 
 .detailsLabel
   color #999
@@ -865,6 +857,7 @@ input[type="submit"]:focus, input[type="submit"]:active {
   margin-top 1rem
   max-height 16%
   overflow hidden
+  width: 400px;
   &:hover
     overflow auto
 
@@ -912,8 +905,7 @@ input[type="submit"]:focus, input[type="submit"]:active {
   text-transform capitalize
 
 .comic_nav, .breadcrumbs
-  width 53%
-  margin 0 auto
+  margin-left: 26vw;
 
 .comic_view
   margin-top 5%
@@ -924,10 +916,13 @@ input[type="submit"]:focus, input[type="submit"]:active {
   margin-right auto
 
 .lblSP
-  font-size 1vw
+  font-size 13px
 
 .lblSP1
   margin-left 27px
+
+#selectChapter
+  width 200px
 
 .prev_page
   position absolute
@@ -1275,13 +1270,30 @@ input[type="submit"]:focus, input[type="submit"]:active {
   width 70%
   margin 0 auto
 
+@media only screen and (max-width: 1000px) {
+  .comic_nav {
+    margin-left: 18vw;
+  }
+
+  .chList {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .chUL {
+    margin-top 18em
+  }
+
+}
+
 @media only screen and (max-width: 768px) {
   header {
     height: 4.6rem;
   }
 
   .logo img {
-    //width: 70%;
     height: 52px;
     margin-left: -25px;
   }
@@ -1289,12 +1301,13 @@ input[type="submit"]:focus, input[type="submit"]:active {
   #manga-list a {
     padding: 18px 10px 20px 10px;
     margin-right: 30px;
-    margin-left: -45px;
+    margin-left: -10px;
     font-size: 1rem;
   }
 
   .form-wrapper {
     width: 250px;
+    margin-left: 12px;
   }
 
   .form-wrapper input {
@@ -1327,9 +1340,189 @@ input[type="submit"]:focus, input[type="submit"]:active {
     width: 390px;
     margin-left: -100px;
   }
+
+  .comic_view img {
+    width: 99.4vw;
+  }
+
+  .comic_nav, .breadcrumbs {
+    width: 91%;
+    font-size: 14px;
+    margin: 0 auto;
+  }
+
+  .detailsView h1 {
+    width 380px
+  }
+
+  .detailsView p {
+    width 380px
+  }
+
+  .titleDetails {
+    width 380px
+  }
+
+  .altDIV {
+    width: 380px;
+  }
+
+  .tile__img {
+    background: aliceblue;
+    padding-bottom: 55px;
+    box-shadow: 0px 0px 3px rgba(255, 255, 255, 0.9),
+            1px 3px 1px rgba(255, 255, 255, 0.08),
+            -1px 2px 2px rgba(255, 255, 255, 0.05);
+  }
+
+  .tile__details {
+    opacity: 1;
+  }
+
+  .tile__title {
+    position: absolute;
+    bottom: 0;
+    padding: 2px;
+    padding-top: 0%;
+    margin-bottom: -20px;
+    font-size: 10px;
+    font-weight: 500;
+    color: #000;
+    width: 100%;
+  }
+
+  .desc_wrap {
+    display: none;
+  }
+
+  .alpha-centauri-2 {
+    padding-top: 0%;
+    margin-top: 232px;
+
+  }
+
+  .circle {
+    color: #000;
+    border: #000 3px solid;
+  }
+
+  .circle:hover {
+    color: #fff;
+    background: #000;
+  }
+
+  .tile-rating, .tile__released {
+    margin-bottom: -40px;
+    color: black
+  }
+
+  .row__inner {
+    margin: 0 7px;
+  }
+
+  .next_prev {
+    display: none;
+  }
+
+  .row__inner:hover {
+    myTransform(translate3d(0, 0, 0))
+  }
+
+  .row__inner:hover .tile {
+    opacity 1
+  }
+
+  .row__inner:hover .tile:hover {
+    myTransform(scale(1))
+    myTransition($duration transform cubic-bezier(0.5, 0, 0.1, 1) 0ms)
+    opacity 1
+  }
+
+  .tile:hover ~ .tile {
+    myTransform(translate3d(0, 0, 0))
+  }
+
 }
 
 @media only screen and (max-width: 680px) {
+  #nav-icon1 {
+    width: 30px;
+    height: 15px;
+    position: absolute;
+    right: 0;
+    margin: 18px 5px;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .5s ease-in-out;
+    -moz-transition: .5s ease-in-out;
+    -o-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+    cursor: pointer;
+  }
+
+  #nav-icon1 span {
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    background: $primaryColor;
+    border-radius: 4px;
+    opacity: 1;
+    left: 0;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .25s ease-in-out;
+    -moz-transition: .25s ease-in-out;
+    -o-transition: .25s ease-in-out;
+    transition: .25s ease-in-out;
+  }
+
+  #nav-icon1 span:nth-child(1) {
+    top: 0px;
+  }
+
+  #nav-icon1 span:nth-child(2) {
+    top: 8px;
+  }
+
+  #nav-icon1 span:nth-child(3) {
+    top: 16px;
+  }
+
+  #nav-icon1.open span:nth-child(1) {
+    top: 8px;
+    -webkit-transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    -o-transform: rotate(135deg);
+    transform: rotate(135deg);
+  }
+
+  #nav-icon1.open span:nth-child(2) {
+    opacity: 0;
+    left: -60px;
+  }
+
+  #nav-icon1.open span:nth-child(3) {
+    top: 8px;
+    -webkit-transform: rotate(-135deg);
+    -moz-transform: rotate(-135deg);
+    -o-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+  }
+
+  .detailsView {
+    font-size: 14px;
+    width: 99.4vw;
+  }
+
+  .detailsView p {
+    width 93vw
+  }
+
   #manga-list {
     display none
   }
@@ -1352,14 +1545,21 @@ input[type="submit"]:focus, input[type="submit"]:active {
     background-position: center;
   }
 
-  #notification_li {
-    margin-right: 25px;
-  }
-
-  .user {
-    margin-right: 0px;
-  }
-
+  //#notificationLink {
+  //  margin-right: 82px;
+  //}
+  //
+  //#notification_count {
+  //  margin-right: 86px;
+  //}
+  //
+  //#notificationContainer:before {
+  //  margin-left: 18.2rem;
+  //}
+  //
+  //.user {
+  //  margin-right: 40px;
+  //}
   .ui-autocomplete {
     margin-left: -165px;
   }
@@ -1369,6 +1569,35 @@ input[type="submit"]:focus, input[type="submit"]:active {
     padding-right: 0.1rem;
     font-size: 13px;
   }
+
+  .auth-links {
+    margin-right: 45px;
+  }
+
+  .chDate {
+    display none
+  }
+
+  #selectChapter, #selectPageState {
+    width: 12%;
+  }
+
+  .comic_nav {
+    font-size: 10px;
+  }
+
+  .lblSP {
+    font-size: 10px;
+  }
+
+}
+
+@media only screen and (max-width: 488px) {
+
+  .form-wrapper {
+    display none
+  }
+
 }
 
 @-moz-document url-prefix()
@@ -1419,6 +1648,10 @@ input[type="submit"]:focus, input[type="submit"]:active {
     line-height: 11px;
 
   @media only screen and (max-width: 768px)
+    .tile-rating {
+      margin-bottom: -37px;
+    }
+
     .logo img
       height: 52px;
       width: 100px;
@@ -1432,3 +1665,14 @@ input[type="submit"]:focus, input[type="submit"]:active {
     .form-wrapper
       margin-left: 10px;
       width: 190px;
+
+  .prev_page, .next_page {
+    margin-top 5px
+  }
+
+  @media only screen and (max-width: 488px) {
+    .form-wrapper {
+      display none
+    }
+
+  }

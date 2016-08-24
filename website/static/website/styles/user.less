@@ -132,7 +132,9 @@ th {
 
 .cng-pass-table {
   text-align: center;
-  padding: 20px;
+  padding: 0.1px;
+  padding-bottom: 20px;
+  background: white;
 }
 
 input[type="password"] {
@@ -140,7 +142,7 @@ input[type="password"] {
 }
 
 input[type="password"], input[type="submit"] {
-  width: 35%;
+  width: 300px;
   margin: 0 auto;
 }
 
@@ -177,6 +179,27 @@ input[type="password"], input[type="submit"] {
   }
   .circleBK:hover {
     line-height: 40px;
+  }
+}
+
+#toggelID {
+  position: absolute;
+  margin-left: 200px;
+  margin-top: 25px;
+}
+
+@media only screen and (max-width: 768px) {
+  #subs h1 {
+    font-size: 1.8rem;
+    margin-left: 189px;
+    margin-bottom: 0;
+    width: 50vw;
+  }
+
+  #toggelID {
+    position: absolute;
+    margin-left: 201px;
+    margin-top: 27px;
   }
 }
 

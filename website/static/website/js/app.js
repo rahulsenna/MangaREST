@@ -86,7 +86,7 @@ $("document").ready(function () {
                 if (subsJSON.results[i].new_chapters > 0) {
                     newChObj[subsJSON.results[i].series_id] = subsJSON.results[i].id;
                     notificNum += 1;
-                    nwChNfHTML += '<ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all">';
+                    nwChNfHTML += '<ul class="ui-front ui-menu ui-widget ui-widget-content ui-corner-all">';
                     nwChNfHTML += '<li class="ui-menu-item"><a href="/' + subsJSON.results[i].slug + '">' + subsJSON.results[i].title +
                         '<span>' + subsJSON.results[i].new_chapters + '</span></a></li>';
                     nwChNfHTML += '</ul>'
@@ -128,6 +128,13 @@ $("document").ready(function () {
             '</li>' +
             authHTML +
             nfHTML +
+            '<li>' +
+            '<div id="nav-icon1">' +
+            '<span></span>' +
+            '<span></span>' +
+            '<span></span>' +
+            '</div>' +
+            '</li>' +
             '</ul></header>' +
             '<div id="wrap">' +
             '<div class="login">' +
@@ -186,11 +193,11 @@ $("document").ready(function () {
                     '<span class="breadcrumbText"> / ' + CHAPTER + '</span>' +
                     '</div>' +
                     '<div class="comic_nav"><label class="lbl"> Pages </label>' +
-                    '<select id="selectPageState" style="width: 93px">' +
+                    '<select id="selectPageState">' +
                     '<option value="0" >One page</option>' +
                     '<option value="1" selected="selected">All pages</option></select>' +
                     '<label class="lbl"> Chapter </label>' +
-                    '<select id="selectChapter" style="width: 40%">';
+                    '<select id="selectChapter">';
                 $.each(data['chapters_set'].reverse(), function (i, value) {
                     if (value.slug == SLUG) {
                         pageHTML += '<option selected="selected" value="' + value.id + '">' + value.chapter_title + '</option>';
@@ -372,8 +379,9 @@ $("document").ready(function () {
                         }
                     });
                 }
+                // Disquss
+                $('body').append(disqusHTML);
             });
-
     }
 
     /*
@@ -418,7 +426,7 @@ $("document").ready(function () {
                             '<div class="tile__details">' +
                             '<a href="/' + value.slug + '"><div class="tile__title">' + value.series_title + '</div></a>' +
                             '<div class="desc_wrap ' + value.id + '" data-subid="' + subbedObj[value.id] + '" data-plusminus="' + plusMinus + '" data-css="' + redCSS.split(' ')[0] + '" data-row="' + num.toString() + '" data-id="' + value.id + '" data-url="' + value.slug + '" data-title="' + value.series_title.replace(/"/g, '&quot;') + '" data-desc="' + value.summary.replace(/"/g, '&quot;') + '" data-released="' + value.released_year + '" data-author="' + value.author + '" data-artist="' + value.artist + '" data-genre="' + value.genre + '" data-status="' + value.status + '" data-rank="' + value.rank + '" data-rating="' + (value.rating * 59) + '" data-alternative="' + value.alternative + '" data-type="' + value.type + '" data-banner="' + value.banner + '"><div class="tile__description">' + value.summary + '</div> <div class="tile__more"></div></div>' +
-                            '<div class="alpha-centauri"><div class="star-ratings-css tile-rating">' +
+                            '<div class="alpha-centauri alpha-centauri-2"><div class="star-ratings-css tile-rating">' +
                             '<div class="star-ratings-css-top ' + value.id + '" style="width: ' + (value.rating * 22) + '% "><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>' +
                             '<div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div></div>' +
                             '<span class="star-rating" data-series="' + value.id + '"><input type="radio" name="rating" value="1"><i></i><input type="radio" name="rating" value="2"><i></i><input type="radio" name="rating" value="3"><i></i><input type="radio" name="rating" value="4"><i></i><input type="radio" name="rating" value="5"><i></i></span></div>' +
@@ -431,10 +439,12 @@ $("document").ready(function () {
                 });
         }
 
-        var firstRowPage = 1;
-        var secondRowPage = 1;
-        getRow(0, firstRowPage); // Loading all the content
-        getRow(1, secondRowPage);
+        // var firstRowPage = 1;
+        // var secondRowPage = 1;
+        var rowPage = [1, 1];
+
+        getRow(0, rowPage[0]); // Loading all the content
+        getRow(1, rowPage[1]);
 
         var nextPrevImgNum = [null, null];
         var transitionCSS = function (num) {
@@ -444,38 +454,42 @@ $("document").ready(function () {
             };
         };
 
-        function myfunction(el, d) {
-            // alert("you swiped on element with id '" + el + "' to " + d +
+        function mobileSwipe(row, el, d) {
             if (d == 'l') {
-                nextPrevImgNum[getDataAttr(this)] += 55;
-                $(el).css(transitionCSS(nextPrevImgNum[getDataAttr(this)]));
+                rowPage[row] += 1;
+                getRow(row, rowPage[row]);
+                nextPrevImgNum[row] -= 55;
+                $(el).css(transitionCSS(nextPrevImgNum[row]));
 
             } else if (d == 'r') {
-                nextPrevImgNum[getDataAttr(this)] -= 55;
-                $(el).css(transitionCSS(nextPrevImgNum[getDataAttr(this)]));
+                if (nextPrevImgNum[row] < 0) {
+                    nextPrevImgNum[row] += 55;
+                    $(el).css(transitionCSS(nextPrevImgNum[row]));
+                }
             }
         }
 
-        detectswipe('row0', myfunction);
+        function mobileNextPrev(el, d) {
+            // alert("you swiped on element with id '" + el + "' to " + d);
+            mobileSwipe(parseInt(el.split('row')[1]), '#' + el, d);
+        }
+
+        detectswipe('row0', mobileNextPrev);
+        detectswipe('row1', mobileNextPrev);
 
         // Next Prev
         $('.tile_next').click(function () {
             nextPrevImgNum[getDataAttr(this)] -= 55;
-            if (getDataAttr(this) == 0) {
-                firstRowPage += 1;
-                getRow(getDataAttr(this), firstRowPage);
-            } else {
-                secondRowPage += 1;
-                getRow(getDataAttr(this), secondRowPage);
-            }
-
+            rowPage[getDataAttr(this)] += 1;
+            getRow(getDataAttr(this), rowPage[getDataAttr(this)]);
             $('.row._' + getDataAttr(this)).css(transitionCSS(nextPrevImgNum[getDataAttr(this)]));
         });
 
         $('.tile_prev').click(function () {
-            nextPrevImgNum[getDataAttr(this)] += 55;
-            $('.row._' + getDataAttr(this)).css(transitionCSS(nextPrevImgNum[getDataAttr(this)]));
-
+            if (nextPrevImgNum[getDataAttr(this)] < 54 || nextPrevImgNum[getDataAttr(this)] == null) {
+                nextPrevImgNum[getDataAttr(this)] += 55;
+                $('.row._' + getDataAttr(this)).css(transitionCSS(nextPrevImgNum[getDataAttr(this)]));
+            }
         });
         // Next Prev END
 
@@ -550,7 +564,7 @@ $("document").ready(function () {
             '<h1>' + subsJSON.count + ' Subscriptions</h1>' +
             '<div class="table-responsive-vertical shadow-z-1">' +
             '<table id="table" class="table table-hover table-mc-light-blue">' +
-            '<div style="position: absolute; margin-left: 200px; margin-top: 25px;">' +
+            '<div id="toggelID">' +
             '<a href="/users/password/change/" class="toggel account-toggel inactive-toggel toggel-hover"></a>' +
             '<a href="#" class="toggel subs-toggel active-toggel"></a>' +
             '<a href="#logout" title="LOGOUT!" class="toggel logout-toggel"></a>' +
@@ -573,6 +587,10 @@ $("document").ready(function () {
         scrollBaby();
         $('#wrap').css('margin', '0 auto 80px');
     }
+
+    $('#nav-icon1').click(function () {
+        $(this).toggleClass('open');
+    });
 
 }); // END document.ready
 
