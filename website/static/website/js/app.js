@@ -109,10 +109,10 @@ $("document").ready(function () {
                 '<div id="notificationFooter"><a href="/users/subs">See All</a></div>' +
                 '</div>' +
                 '</li>';
-            authHTML = '<li><a href="/users/subs" class="user"></a></li>';
+            authHTML = '<li><a class="search-toggle user" style="margin: 17px 118px;"></a><a href="/users/subs" class="user"></a></li>';
         } else {
             nfHTML = '';
-            authHTML = '<li class="auth-links"><a href="javascript:void(0);" id="loginform">Login</a> | ' +
+            authHTML = '<li class="auth-links"><a class="search-toggle"></a><a href="javascript:void(0);" id="loginform">Login</a> | ' +
                 '<a class="signup" href="javascript:void(0);" id="registerform">Register</a></li>';
         }
 
@@ -135,6 +135,7 @@ $("document").ready(function () {
             '<span></span>' +
             '</div>' +
             '</li>' +
+            '<li></li>' +
             '</ul></header>' +
             '<div id="wrap">' +
             '<div class="login">' +
@@ -326,10 +327,10 @@ $("document").ready(function () {
                 // Body
 
                 var redCSS = '';
-                var plusMinus = '+';
+                var plusMinus = 'unchecked';
                 if (data.id in subbedObj) {
                     redCSS = 'red-circle';
-                    plusMinus = '-';
+                    plusMinus = 'checked';
                 }
 
                 $('#data').append('<div class="fullview marginToNav"></div>');
@@ -339,8 +340,8 @@ $("document").ready(function () {
                     '<span class="star-rating full" data-series="' + data.id + '"><input type="radio" name="rating" value="1"><i></i><input type="radio" name="rating" value="2"><i></i><input type="radio" name="rating" value="3"><i></i><input type="radio" name="rating" value="4"><i></i><input type="radio" name="rating" value="5"><i></i></span>' +
                     '<div class="star-ratings-css star-ratings-css1">' +
                     '<div class="star-ratings-css-top full' + data.id + '" style="width: ' + (data.rating * 59) + '% "><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>' +
-                    '<div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span><span class="detailsViewYear">' + data.released_year + '</span><span class="maturity"><span>16+</span></span>' + '</div></div></div>' +
-                    '<div id="subFull' + data.id + '" data-subid="' + subbedObj[data.id] + '" data-id="' + data.id + '" class="circle ' + redCSS + '">' + plusMinus + '</div>' +
+                    '<div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span><span class="detailsViewYear">' + data.released_year + '</span><span class="maturity"><span>16+</span></span>' +
+                    '<input id="subFull' + data.id + '" type="checkbox" class="tgl tgl-flip" '+ plusMinus +'/><label data-id="' + data.id + '" data-tg-on="Sub\'d" data-tg-off="Sub!" for="subFull' + data.id + '" class="tgl-btn tgl-full"></label>' + '</div></div></div>' +
                     '<p title="' + data.summary + '">' + data.summary + '</p>' +
                     '<div class="titleDetails"><div><span class="detailsLabel">Author: </span><span>' + getLinksFromCSV('autart', data.author) + '</span>' +
                     '<span class="detailsLabel"> Artist: </span><span>' + getLinksFromCSV('autart', data.artist) + '</span></div>' +
@@ -395,6 +396,7 @@ $("document").ready(function () {
         navigation();
         scrollBaby();
         // Body
+        var rowHeadings = ['Popular on Manga Nites', 'Top Rated']
         for (var i = 0; i < 2; i++) {
             $('#data').append(
                 '<div class="next_prev" >' +
@@ -402,6 +404,7 @@ $("document").ready(function () {
                 ' </div> ' +
                 '<div class="contain _' + i.toString() + '">' +
                 '<div class="row _' + i.toString() + '">' +
+                '<h4 class="row-heading">' + rowHeadings[i] + '</h4>' +
                 '<div class="row__inner _' + i.toString() + '" id="row' + i.toString() + '">' +
                 '</div> </div> </div>' +
                 '<div class="fullview" id="dv' + i.toString() + '"></div>'
@@ -414,10 +417,10 @@ $("document").ready(function () {
                 function (data) {
                     $.each(data['results'], function (i, value) {
                         var redCSS = '';
-                        var plusMinus = '+';
+                        var plusMinus = 'unchecked';
                         if (value.id in subbedObj) {
                             redCSS = 'red-circle red-circle-tile';
-                            plusMinus = '-';
+                            plusMinus = 'checked';
                         }
                         $('.row__inner._' + num.toString()).append(
                             '<div class="tile">' +
@@ -431,7 +434,7 @@ $("document").ready(function () {
                             '<div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div></div>' +
                             '<span class="star-rating" data-series="' + value.id + '"><input type="radio" name="rating" value="1"><i></i><input type="radio" name="rating" value="2"><i></i><input type="radio" name="rating" value="3"><i></i><input type="radio" name="rating" value="4"><i></i><input type="radio" name="rating" value="5"><i></i></span></div>' +
                             '<div class="tile__released" data-id="' + value.id + '">' + value.released_year + '</div>' +
-                            '<div id="subHalf' + value.id + '" data-subid="' + subbedObj[value.id] + '" data-id="' + value.id + '" class="' + redCSS + ' tile-circle circle">' + plusMinus + '</div>' +
+                            '<input id="subHalf' + value.id + '" type="checkbox" class="tgl tgl-flip" '+ plusMinus +'/><label data-id="' + value.id + '" data-tg-on="Sub\'d" data-tg-off="Sub!" for="subHalf' + value.id + '" class="tgl-btn tgl-tile"></label>' +
                             '</div></div></div>'
                         ); // end append
                     }); // end for each loop
@@ -507,20 +510,26 @@ $("document").ready(function () {
                 }, 1000);
             });
 
-            var myHTML = '<div class="shadow"></div> <div class="detailsView"> <a href="' + $(this).data('url') + '"><h1>' + $(this).data('title').toLowerCase() + '</h1></a>' +
+            var myHTML = '<div class="shadow"></div> <div class="detailsView">' +
+                '<a href="' + $(this).data('url') + '"><h1>' + $(this).data('title').toLowerCase() + '</h1></a>' +
                 '<div class="alpha-centauri">' +
-                '<span class="star-rating full" data-series="' + $(this).data('id') + '"><input type="radio" name="rating" value="1"><i></i><input type="radio" name="rating" value="2"><i></i><input type="radio" name="rating" value="3"><i></i><input type="radio" name="rating" value="4"><i></i><input type="radio" name="rating" value="5"><i></i></span>' +
+                '<span class="star-rating full" data-series="' + $(this).data('id') + '">' +
+                '<input type="radio" name="rating" value="1"><i></i>' +
+                '<input type="radio" name="rating" value="2"><i></i>' +
+                '<input type="radio" name="rating" value="3"><i></i>' +
+                '<input type="radio" name="rating" value="4"><i></i>' +
+                '<input type="radio" name="rating" value="5"><i></i></span>' +
                 '<div class="star-ratings-css star-ratings-css1">' +
                 '<div class="star-ratings-css-top full' + $(this).data('id') + '" style="width: ' + $(this).attr('data-rating') + '% "><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>' +
-                '<div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span><span class="detailsViewYear">' + $(this).data('released') + '</span><span class="maturity"><span>16+</span></span></div></div></div>' +
-                '<div id="subFull' + $(this).data('id') + '" data-subid="' + $(this).data('subid') + '" data-id="' + $(this).data('id') + '" class="circle ' + $(this).attr('data-css') + '">' + $(this).attr('data-plusminus') + '</div>' +
+                '<div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span><span class="detailsViewYear">' + $(this).data('released') + '</span><span class="maturity"><span>16+</span></span>' +
+                '<input id="subFull' + $(this).data('id') + '" type="checkbox" class="tgl tgl-flip" '+ $(this).attr('data-plusminus') +'/><label data-id="' + $(this).data('id') + '" data-tg-on="Sub\'d" data-tg-off="Sub!" for="subFull' + $(this).data('id') + '" class="tgl-btn tgl-full"></label></div></div></div>' +
                 '<p>' + $(this).data('desc') + '</p>' +
                 '<div class="titleDetails"><div><span class="detailsLabel">Author: </span><span>' + getLinksFromCSV('autart', $(this).data('author')) + '</span>' +
                 '<span class="detailsLabel"> Artist: </span><span>' + getLinksFromCSV('autart', $(this).data('artist')) + '</span></div>' +
                 '<div><span class="detailsLabel">Genre: </span><span>' + getLinksFromCSV('genres', $(this).data('genre')) + '</span></div>' +
                 '<div><span class="detailsLabel">Status: </span><span>' + $(this).data('status') + '</span></div>' +
                 '<div><span class="detailsLabel">Rank: </span><span>' + $(this).data('rank') + '</span></div>' +
-                '<div><span class="detailsLabel">Alternative: </span><span>' + $(this).data('alternative') + '</span></div>' +
+                '<div class="altDIV"><span class="detailsLabel">Alternative: </span><span>' + $(this).data('alternative') + '</span></div>' +
                 '<div><span class="detailsLabel">Type: </span><span>' + $(this).data('type') + '</span></div></div></div>' +
                 '<div class="imageView"><div class="close" data-row="' + getDataAttr(this) + '"></div><div class="top_corner_shadow"></div><div class="bottomShadow"></div></div>';
 
@@ -556,7 +565,9 @@ $("document").ready(function () {
             tds += '<tr>' +
                 '<td data-title="Manga"><a href="/' + subsJSON.results[i].slug + '" >' + subsJSON.results[i].title + '</a></td>' +
                 '<td style="' + redText + '" data-title="New Chapters">' + subsJSON.results[i].new_chapters + '</td>' +
-                '<td data-title="Status">' + '<div id="subFull' + value.series_id + '" data-id="' + value.series_id + '" class="circleBK">-</div></td>' +
+                '<td data-title="Status">' +
+                '<input id="subFull' + value.series_id + '" type="checkbox" class="tgl tgl-flip" '+ 'checked' +'/><label data-id="' + value.series_id + '" data-id="' + $(this).data('id') + '" data-tg-on="Sub\'d" data-tg-off="Sub!" for="subFull' + $(this).data('id') + '" class="tgl-btn tgl-full subs-page"></label>' +
+                '</td>' +
                 '</tr>'
         }
         var subsHTML = '';
@@ -588,11 +599,30 @@ $("document").ready(function () {
         $('#wrap').css('margin', '0 auto 80px');
     }
 
-    $('#nav-icon1').click(function () {
-        $(this).toggleClass('open');
+    $(document).on('click', '#nav-icon1', function () {
+        $('#nav-icon1').toggleClass('open').addClass('hamburger');
+        $('.logo, .auth-links, .user, .search-toggle, #notification_li').hide();
+        $('#manga-list').show();
     });
 
-}); // END document.ready
+    $(document).on('click', '.hamburger', function () {
+        $('#nav-icon1').removeClass('open').removeClass('hamburger');
+        $('.logo, .auth-links, .user, .search-toggle, #notification_li').show();
+        $('.form-wrapper, #manga-list').hide();
+    });
+
+    $(document).on('click', '.search-toggle', function () {
+        $('.logo, .auth-links, .user, .search-toggle, #notification_li').hide();
+        $('#nav-icon1').toggleClass('open').addClass('hamburger');
+        $('.form-wrapper').show();
+    });
+
+});
+/*
+ * =========================================
+ *          END DOCUMENT.READY()
+ * =========================================
+ */
 
 
 $(document).ajaxStart(function () {
@@ -755,11 +785,12 @@ $(document).mouseup(function (e) {
     }
 });
 
-$(document).on('click', '.circle, .circleBK', function () {
+$(document).on('click', '.tgl-btn', function () {
     var id = parseInt($(this).attr('data-id'));
 
     if (!isAuthenticated()) {
         $('#loginform').click();
+        $('#subFull' + id + ', #subHalf' + id).prop('checked', true);
         showSnackbar('Please Login or Sign Up to Subscribe!');
     }
     else if (id in subbedObj) {
@@ -772,9 +803,8 @@ $(document).on('click', '.circle, .circleBK', function () {
             },
             success: function (result) {
                 delete subbedObj[id];
-                $('#subHalf' + id).removeClass('red-circle red-circle-tile').text('+');
-                $('#subFull' + id).removeClass('red-circle').text('+');
-                $('.desc_wrap.' + id).attr('data-css', 'circle').attr('data-plusminus', '+');
+                $('#subFull' + id + ', #subHalf' + id).prop('checked', false);
+                $('.desc_wrap.' + id).attr('data-plusminus', 'unchecked');
                 showSnackbar('Unsubscribed!');
             }
         });
@@ -789,9 +819,8 @@ $(document).on('click', '.circle, .circleBK', function () {
             },
             success: function (result) {
                 subbedObj[id] = result.id;
-                $('#subHalf' + id).addClass('red-circle red-circle-tile').text('-');
-                $('#subFull' + id).addClass('red-circle').text('-');
-                $('.desc_wrap.' + id).attr('data-css', 'circle red-circle').attr('data-plusminus', '-');
+                $('#subFull' + id + ', #subHalf' + id).prop('checked', true);
+                $('.desc_wrap.' + id).attr('data-plusminus', 'checked');
                 showSnackbar('Subscribed!');
             }
         });

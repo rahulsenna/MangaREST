@@ -667,77 +667,128 @@ input[type="submit"]:focus, input[type="submit"]:active {
 .alpha-centauri:hover .star-rating
   visibility visible
 
-.circle {
-  position absolute
-  margin-top: -32px;
-  margin-bottom: -10px;
-  margin-left: 217px;
-  width: 28px;
-  height: 28px;
-  border-radius: 250px;
-  font-size: 22px;
-  font-weight: bolder;
-  color: #fff;
-  line-height: 30px;
+.tgl-tile {
+  margin-top: -48px;
+  margin-left: 48px;
+  myTransform(scale(0.5))
+}
+
+.tgl-full {
+  margin-left: 185px;
+  margin-top: -23px;
+  z-index: 10000;
+}
+
+.tgl {
+  display: none;
+}
+
+.tgl, .tgl:after, .tgl:before, .tgl *, .tgl *:after, .tgl *:before, .tgl + .tgl-btn {
+  box-sizing: border-box;
+}
+
+.tgl::-moz-selection, .tgl:after::-moz-selection, .tgl:before::-moz-selection, .tgl *::-moz-selection, .tgl *:after::-moz-selection, .tgl *:before::-moz-selection, .tgl + .tgl-btn::-moz-selection {
+  background: none;
+}
+
+.tgl::selection, .tgl:after::selection, .tgl:before::selection, .tgl *::selection, .tgl *:after::selection, .tgl *:before::selection, .tgl + .tgl-btn::selection {
+  background: none;
+}
+
+.tgl + .tgl-btn {
+  outline: 0;
+  display: block;
+  width: 4rem;
+  height: 1.5rem;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.tgl + .tgl-btn:after, .tgl + .tgl-btn:before {
+  position: relative;
+  display: block;
+  content: "";
+  width: 50%;
+  height: 100%;
+}
+
+.tgl + .tgl-btn:after {
+  left: 0;
+}
+
+.tgl + .tgl-btn:before {
+  display: none;
+}
+
+.tgl:checked + .tgl-btn:after {
+  left: 50%;
+}
+
+.tgl-flip + .tgl-btn {
+  padding: 2px;
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease;
+  font-family: sans-serif;
+  -webkit-perspective: 100px;
+  perspective: 100px;
+}
+
+.tgl-flip + .tgl-btn:after, .tgl-flip + .tgl-btn:before {
+  display: inline-block;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
+  width: 100%;
   text-align: center;
-  background: transparent;
-  border: #fff 3px solid;
-  cursor pointer
+  position: absolute;
+  font-weight: bold;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 4px;
+  line-height: 1.6rem;
+  font-size: 15px;
 }
 
-.circle:hover {
-  margin-top: -34px;
-  margin-left: 215px;
-  line-height: 34px;
-  width: 32px;
-  height: 32px;
-  font-size: 25px;
-  color: $bgColor;
-  background: #fff;
+.tgl-flip + .tgl-btn:after {
+  content: attr(data-tg-on);
+  background: #02C66F;
+  -webkit-transform: rotateY(-180deg);
+  transform: rotateY(-180deg);
 }
 
-.tile-circle
-  margin-top: -47px;
-  margin-left: 58px;
-  width: 13px;
-  height: 13px;
-  border-radius: 250px;
-  font-size: 13px;
-  font-weight: bolder;
-  line-height: 14.5px;
-  border: #fff 2px solid;
-  position absolute
-  right 0
-  margin-right 5px
+.tgl-flip + .tgl-btn:before {
+  background: #FF3A19;
+  content: attr(data-tg-off);
+}
 
-.tile-circle:hover
-  margin-top: -47px;
-  margin-left: 58px;
-  width: 13px;
-  height: 13px;
-  border-radius: 250px;
-  font-size: 13px;
-  font-weight: bolder;
-  line-height: 14.5px;
-  border: #fff 2px solid;
+.tgl-flip + .tgl-btn:active:before {
+  -webkit-transform: rotateY(-20deg);
+  transform: rotateY(-20deg);
+}
 
-.red-circle
-  border: $primaryColor 3px solid
-  color $primaryColor
-  line-height: 28px;
-  &:hover
-    color $bgColor
-    background $primaryColor
-    line-height: 32px;
+.tgl-flip:checked + .tgl-btn:before {
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
 
-.red-circle-tile
-  border: $primaryColor 2px solid-
-  line-height: 12px;
-  font-size: 18px;
-  &:hover
-    border: $primaryColor 2px solid
-    line-height: 12px;
-    font-size: 18px;
+.tgl-flip:checked + .tgl-btn:after {
+  -webkit-transform: rotateY(0);
+  transform: rotateY(0);
+  left: 0;
+  background: #7FC6A6;
+}
+
+.tgl-flip:checked + .tgl-btn:active:after {
+  -webkit-transform: rotateY(20deg);
+  transform: rotateY(20deg);
+}
 
 .fullview
   height 25rem
@@ -928,7 +979,7 @@ input[type="submit"]:focus, input[type="submit"]:active {
   position absolute
   width 33px
   height 13px
-  background url("../assets/more.png") no-repeat 0% 0%
+  background url("../assets/more.pn1063g") no-repeat 0% 0%
   myTransform(rotate(90deg))
 
 .next_page
@@ -1270,6 +1321,16 @@ input[type="submit"]:focus, input[type="submit"]:active {
   width 70%
   margin 0 auto
 
+.search-toggle {
+  display none
+}
+
+.row-heading {
+  position absolute
+  color #3C4E5D
+  margin-left 0.5rem
+}
+
 @media only screen and (max-width: 1000px) {
   .comic_nav {
     margin-left: 18vw;
@@ -1293,6 +1354,10 @@ input[type="submit"]:focus, input[type="submit"]:active {
     height: 4.6rem;
   }
 
+  .row-heading {
+    position relative
+  }
+
   .logo img {
     height: 52px;
     margin-left: -25px;
@@ -1306,7 +1371,7 @@ input[type="submit"]:focus, input[type="submit"]:active {
   }
 
   .form-wrapper {
-    width: 250px;
+    //width: 250px;
     margin-left: 12px;
   }
 
@@ -1351,22 +1416,6 @@ input[type="submit"]:focus, input[type="submit"]:active {
     margin: 0 auto;
   }
 
-  .detailsView h1 {
-    width 380px
-  }
-
-  .detailsView p {
-    width 380px
-  }
-
-  .titleDetails {
-    width 380px
-  }
-
-  .altDIV {
-    width: 380px;
-  }
-
   .tile__img {
     background: aliceblue;
     padding-bottom: 55px;
@@ -1401,12 +1450,12 @@ input[type="submit"]:focus, input[type="submit"]:active {
 
   }
 
-  .circle {
+  .tile-circle {
     color: #000;
     border: #000 3px solid;
   }
 
-  .circle:hover {
+  .tile-circle:hover {
     color: #fff;
     background: #000;
   }
@@ -1529,14 +1578,14 @@ input[type="submit"]:focus, input[type="submit"]:active {
 
   .form-wrapper {
     margin-left: -30px;
-    width: 190px;
+    //width: 190px;
   }
 
   .form-wrapper input {
     width: 150px;
   }
 
-  .form-wrapper button {
+  .form-wrapper button, .form-wrapper button:hover {
     height: 32px;
     width: 30px;
     font-size: 0px;
@@ -1545,21 +1594,6 @@ input[type="submit"]:focus, input[type="submit"]:active {
     background-position: center;
   }
 
-  //#notificationLink {
-  //  margin-right: 82px;
-  //}
-  //
-  //#notification_count {
-  //  margin-right: 86px;
-  //}
-  //
-  //#notificationContainer:before {
-  //  margin-left: 18.2rem;
-  //}
-  //
-  //.user {
-  //  margin-right: 40px;
-  //}
   .ui-autocomplete {
     margin-left: -165px;
   }
@@ -1578,6 +1612,10 @@ input[type="submit"]:focus, input[type="submit"]:active {
     display none
   }
 
+  .chList {
+    font-size: 12px;
+  }
+
   #selectChapter, #selectPageState {
     width: 12%;
   }
@@ -1590,12 +1628,86 @@ input[type="submit"]:focus, input[type="submit"]:active {
     font-size: 10px;
   }
 
+  .shadow {
+    display none
+  }
+
+  .imageView {
+    background url("")
+  }
+
 }
 
 @media only screen and (max-width: 488px) {
+  #selectChapter,
+  #selectPageState {
+    width: 36%;
+  }
+
+  #selectPage {
+    margin: 15px;
+  }
+
+  .btn {
+    margin-top: 18px;
+  }
+
+  .search-toggle {
+    cursor pointer
+    padding-top 0
+    display inline-block
+    margin-bottom: -7px;
+    background: url(../assets/search_icon.png) no-repeat;
+  }
 
   .form-wrapper {
     display none
+  }
+
+  .form-wrapper input {
+    width 70vw
+  }
+
+  .ui-autocomplete {
+    margin-left: -32px;
+    width 80vw
+  }
+
+  .formholder {
+    margin-right: 27px;
+    width: 86vw;
+  }
+
+  .arrow-up, .arrow-reg {
+    display none
+  }
+
+  #notificationTitle {
+    width: 86vw;
+  }
+
+  #notificationContainer {
+    width 90vw
+  }
+
+  #notificationContainer:before {
+    display none
+  }
+
+  .detailsView h1 {
+    width 88vw
+  }
+
+  .detailsView p {
+    width 88vw
+  }
+
+  .titleDetails {
+    width 88vw
+  }
+
+  .altDIV {
+    width: 88vw;
   }
 
 }
@@ -1637,15 +1749,16 @@ input[type="submit"]:focus, input[type="submit"]:active {
       margin-left: 215px;
       line-height: 29px
 
-  .tile-circle
-    margin-top: -47px;
-    margin-left: 58px;
-    line-height: 11px
+  .tgl + .tgl-btn {
+    outline: 0;
+    display: block;
+    width: 3.5rem;
+    height: 1.2rem;
+  }
 
-  .tile-circle:hover
-    margin-top: -47px;
-    margin-left: 58px;
-    line-height: 11px;
+  .tgl-flip + .tgl-btn:after, .tgl-flip + .tgl-btn:before {
+    font-size 12px
+  }
 
   @media only screen and (max-width: 768px)
     .tile-rating {
@@ -1660,18 +1773,28 @@ input[type="submit"]:focus, input[type="submit"]:active {
     #manga-list a
       margin-left 7px
 
-  @media only screen and (max-width: 680px)
+  @media only screen and (max-width: 680px) {
 
-    .form-wrapper
-      margin-left: 10px;
-      width: 190px;
+    .form-wrapper {
+      margin-left: 15px;
+    }
 
-  .prev_page, .next_page {
-    margin-top 5px
+    .prev_page, .next_page {
+      margin-top 5px
+    }
+
+    .full-circle {
+      margin-top: -113px;
+    }
+
+    .full-circle:hover {
+      margin-top: -115px;
+    }
   }
 
   @media only screen and (max-width: 488px) {
     .form-wrapper {
+      margin-left: -30px;
       display none
     }
 

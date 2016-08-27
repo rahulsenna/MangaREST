@@ -93,38 +93,8 @@ input[type="submit"] {
   width: 300px;
   margin: 0 auto;
 }
-.circleBK {
-  cursor: pointer;
-  position: absolute;
+.subs-page {
   margin-top: -3px;
-  margin-left: 40px;
-  width: 28px;
-  height: 28px;
-  font-size: 26px;
-  border-radius: 250px;
-  color: #E50914;
-  line-height: 28px;
-  text-align: center;
-  background: transparent;
-  border: #E50914 2px solid;
-}
-.circleBK:hover {
-  line-height: 32px;
-  width: 32px;
-  height: 32px;
-  font-size: 27px;
-  color: white;
-  background: #E50914;
-  margin-top: -5px;
-  margin-left: 39px;
-}
-@-moz-document url-prefix() {
-  .circleBK {
-    line-height: 30px;
-  }
-  .circleBK:hover {
-    line-height: 40px;
-  }
 }
 #toggelID {
   position: absolute;
@@ -142,6 +112,22 @@ input[type="submit"] {
     position: absolute;
     margin-left: 201px;
     margin-top: 27px;
+  }
+  .subs-page {
+    right: 0;
+    position: absolute;
+  }
+}
+@media only screen and (max-width: 380px) {
+  #subs h1 {
+    font-size: 1.1rem;
+    margin-left: 155px;
+    margin-bottom: 0;
+    width: 50vw;
+  }
+  input[type="password"],
+  input[type="submit"] {
+    width: 80vw;
   }
 }
 .table {
@@ -227,14 +213,10 @@ input[type="submit"] {
   background-color: rgba(0, 0, 0, 0.12);
 }
 @media screen and (max-width: 768px) {
-  .table-responsive-vertical .circleBK {
+  .table-responsive-vertical .subs-page {
     right: 0;
-    margin-right: 12px;
-    margin-top: -7px;
-  }
-  .table-responsive-vertical .circleBK:hover {
-    margin-right: 9px;
-    margin-top: -9px;
+    margin-right: 10px;
+    position: absolute;
   }
   .table-responsive-vertical > .table {
     margin-bottom: 0;

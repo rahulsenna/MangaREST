@@ -57,3 +57,14 @@ class UpdateDestroySubsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
         fields = ('total_chapters_seen',)
+
+
+class PasswordSerializer(serializers.Serializer):
+    old_pass = serializers.CharField()
+    new_pass = serializers.CharField()
+
+    def create(self, validated_data):
+        pass
+
+    def update(self, instance, validated_data):
+        pass

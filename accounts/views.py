@@ -6,7 +6,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from comics.models import Series
-from .serializers import UserCreateSerializer, ListSubsSerializer, SubscribeSerializer, UpdateDestroySubsSerializer
+from .serializers import UserCreateSerializer, ListSubsSerializer, SubscribeSerializer, UpdateDestroySubsSerializer, \
+    PasswordSerializer
 from .models import Subscription
 
 
@@ -66,3 +67,18 @@ class UpdateDestroySubs(generics.RetrieveUpdateDestroyAPIView):
         serializer.instance.new_chapters = 0
         serializer.total_chapters_seen = self.request.data['total_chapters_seen']
         serializer.save()
+
+
+class UpdatePass(generics.CreateAPIView):
+    serializer_class = PasswordSerializer
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        old_pass = self.request.data['old_pass']
+        new_pass = self.request.data['new_pass']
+        print(old_pass)
+        if user.check_password(old_pass):
+            user.set_password(new_pass)
+            user.save()
+        else:
+            raise ValidationError('Your old password was entered incorrectly. Please enter it again.')
