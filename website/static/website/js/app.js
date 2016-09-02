@@ -2,7 +2,7 @@
 function scrollBaby() {
     var didScroll;
     var lastScrollTop = 0;
-    var delta = 5;
+    var delta = 120;
     var navbarHeight = $('header').outerHeight();
 
     $(window).scroll(function (event) {
@@ -44,6 +44,32 @@ function scrollBaby() {
 /*     END -- Nav Bar Hide on scroll function -- END     */
 
 var disqusHTML = '<div id="disqus_thread"></div><script>(function() {var d = document, s = d.createElement(\'script\');s.src = \'//mangatanga.disqus.com/embed.js\';s.setAttribute(\'data-timestamp\', +new Date());(d.head || d.body).appendChild(s);})();</script>';
+var footerHTML = '<footer class="footer">' +
+    '<div class="footer-left">' +
+    '<div id="footer-logo"></div>' +
+    '<p class="footer-company-name">Manga Nites &copy; 2016</p>' +
+    '</div>' +
+    '<div class="footer-center">' +
+    '<h3>Have any suggestion or a question?</h3>' +
+    '<div>' +
+    '<i class="fa fa-map-marker"></i>' +
+    '<p>Tweet us <a target="_blank" href="http://twitter.com/manganites">@manganites</a></p>' +
+    '</div>' +
+    '<div>' +
+    '<i class="fa fa-envelope"></i>' +
+    '<p>or email us <a href="mailto:hello@manganites.com">hello@manganites.com</a></p>' +
+    '</div>' +
+    '</div>' +
+    '<div class="footer-right">' +
+    '<div class="footer-icons">' +
+    '<a href="http://facebook.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/facebook.png"></a>' +
+    '<a href="http://twitter.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/twitter.png"></a>' +
+    '<a href="http://plus.google.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/google_plus.png"></a>' +
+    '<a href="http://instagram.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/instagram.png"></a>' +
+    '<a href="http://pinterest.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/pinterest.png"></a>' +
+    '</div>' +
+    '</div>' +
+    '</footer>';
 var siteTitle = 'Manga Nites';
 var baseAPI = '/api/v1/series/';
 
@@ -61,12 +87,11 @@ if (isAuthenticated()) {
     }))
         .done(function (data) {
             subsJSON = data;
-            console.log(data);
-
         })
         .fail(function (data) {
             subsJSON = data;
-            alert('failed');
+            // localStorage.removeItem('token');
+            console.log('Not logged')
         });
 }
 
@@ -118,7 +143,7 @@ $("document").ready(function () {
 
         var srchHTML = '<form action="/search/" method="get" class="form-wrapper cf"><input type="text" name="q" autocomplete="off" onkeyup="showResult(this.value)" placeholder="Search..." required><button type="submit">Search</button></form><div id="livesearch"></div>';
 
-        $('body').append('<div class="infinity"><img src="/static/website/assets/infinity.svg"></div>' +
+        $('body').append('<div class="infinity"><img src="/static/website/assets/loading.gif"></div>' +
             '<header class="nav-down">' +
             '<ul class="nav-ul">' +
             '<li><a class="logo" href="/"><img src="/static/website/assets/logoRed.png" alt="Manga Nites logo"></a></li>' +
@@ -163,6 +188,7 @@ $("document").ready(function () {
             '</div></div></div>' +
             '</div>' +
             '<div id="data"></div>' +
+            footerHTML +
             '<div id="snackbar">Some text some message..</div>'
         )
         ;
@@ -279,11 +305,13 @@ $("document").ready(function () {
                 });
 
                 $(document).keydown(function (e) {
-                    if (e.keyCode == 37) {
+                    var sl = $(this).scrollLeft();
+                    console.log('st: ' + sl +' $(window).width() : ' + $(window).width() + ' $(document).width(): ' + $(document).width());
+                    if (e.keyCode == 37 && sl == 0 && localStorage.getItem('onePage') === 'true') {
                         clPvPg();
                         return false;
                     }
-                    else if (e.keyCode == 39) {
+                    else if (e.keyCode == 39 && (sl + $(window).width() + 10) >= $(document).width() && localStorage.getItem('onePage') === 'true') {
                         clNxPg();
                         return false;
                     }
@@ -300,13 +328,15 @@ $("document").ready(function () {
                         localStorage.setItem('onePage', true);
                     } else {
                         localStorage.setItem('onePage', false);
+                        window.location.href = currentPageUrl.split('#')[0];
                     }
                     showComicPage();
                 });
 
 
                 // Disquss
-                $('body').append(disqusHTML);
+                $('#data').append(disqusHTML);
+                $('body').append('<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52ead56257068c9a"></script>');
             });
 
     } // End Chapter View
@@ -326,11 +356,27 @@ $("document").ready(function () {
                 scrollBaby();
                 // Body
 
-                var redCSS = '';
                 var plusMinus = 'unchecked';
                 if (data.id in subbedObj) {
-                    redCSS = 'red-circle';
                     plusMinus = 'checked';
+                }
+
+                // Storing recently viewed items
+                if (localStorage.getItem("recent")) {
+                    var storedRecent = JSON.parse(localStorage.getItem("recent"));
+                    if ($.inArray(data.id, storedRecent) > -1) {
+                        storedRecent.splice(storedRecent.indexOf(data.id), 1);
+                        storedRecent.push(data.id);
+                        localStorage.setItem("recent", JSON.stringify(storedRecent));
+                    } else {
+                        storedRecent.push(data.id);
+                        localStorage.setItem("recent", JSON.stringify(storedRecent));
+                    }
+
+                } else {
+                    var recent = [];
+                    recent[0] = data.id;
+                    localStorage.setItem("recent", JSON.stringify(recent));
                 }
 
                 $('#data').append('<div class="fullview marginToNav"></div>');
@@ -341,23 +387,24 @@ $("document").ready(function () {
                     '<div class="star-ratings-css star-ratings-css1">' +
                     '<div class="star-ratings-css-top full' + data.id + '" style="width: ' + (data.rating * 59) + '% "><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>' +
                     '<div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span><span class="detailsViewYear">' + data.released_year + '</span><span class="maturity"><span>16+</span></span>' +
-                    '<input id="subFull' + data.id + '" type="checkbox" class="tgl tgl-flip" '+ plusMinus +'/><label data-id="' + data.id + '" data-tg-on="Sub\'d" data-tg-off="Sub!" for="subFull' + data.id + '" class="tgl-btn tgl-full"></label>' + '</div></div></div>' +
+                    '<input id="subFull' + data.id + '" type="checkbox" class="tgl tgl-flip" ' + plusMinus + '/><label data-id="' + data.id + '" data-tg-on="Sub\'d" data-tg-off="Sub!" for="subFull' + data.id + '" class="tgl-btn tgl-full"></label>' + '</div></div></div>' +
                     '<p title="' + data.summary + '">' + data.summary + '</p>' +
                     '<div class="titleDetails"><div><span class="detailsLabel">Author: </span><span>' + getLinksFromCSV('autart', data.author) + '</span>' +
                     '<span class="detailsLabel"> Artist: </span><span>' + getLinksFromCSV('autart', data.artist) + '</span></div>' +
                     '<div><span class="detailsLabel">Genre: </span><span>' + getLinksFromCSV('genres', data.genre) + '</span></div>' +
                     '<div><span class="detailsLabel">Status: </span><span>' + data.status + '</span></div>' +
-                    '<div><span class="detailsLabel">Rank: </span><span>' + data.rank + '</span></div>' +
                     '<div class="altDIV"><span class="detailsLabel">Alternative: </span><span>' + data.alternative + '</span></div>' +
                     '<div><span class="detailsLabel">Type: </span><span>' + data.type + '</span></div></div></div>' +
-                    '<div class="imageView"><div class="top_corner_shadow"></div><div class="bottomShadow"></div>' +
+                    '<div class="imageView" style="background-image: url(' + data.banner + ')"><div class="top_corner_shadow"></div><div class="bottomShadow"></div>' +
                     '<div class="series_cover"><img src="' + data.series_art + '"></div>' +
                     '</div>';
                 $('.fullview').show().html(myHTML);
 
-                var chHTML = '<div class="chaptersVeiw"><ul class="chUL">';
+                var chHTML = '<div class="chaptersVeiw"><ul class="chUL"><div style="margin-left: 13vw" class="addthis_inline_share_toolbox"><strong>Chapters</strong></div>';
 
-                $.each(data['chapters_set'].reverse(), function (i, value) {
+                $.each(data['chapters_set'].sort(function (a, b) {
+                    return a.chapter_index - b.chapter_index;
+                }).reverse(), function (i, value) {
                     var date = new Date(value.chapter_date);
                     chHTML += '<li class="chList"><a href="' + data.slug + '/' + value.slug + '"><span class="chLight" title="' + data.series_title + '">' + data.series_title.substr(0, 28) + '</span> ' + value.chapter_title + '</a>' +
                         '<span class="chDate"><i>' + date.toLocaleString() + '</i></span></li>';
@@ -381,7 +428,8 @@ $("document").ready(function () {
                     });
                 }
                 // Disquss
-                $('body').append(disqusHTML);
+                $('#data').append(disqusHTML);
+                $('body').append('<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52ead56257068c9a"></script>');
             });
     }
 
@@ -396,8 +444,31 @@ $("document").ready(function () {
         navigation();
         scrollBaby();
         // Body
-        var rowHeadings = ['Popular on Manga Nites', 'Top Rated']
-        for (var i = 0; i < 2; i++) {
+        var rowPage = [];
+        var nextPrevImgNum = [];
+        var rowHeadings = [];
+        var recentAPI = null;
+        // random genres
+        if (localStorage.getItem("recent")) {
+            recentAPI = 'recent/' + JSON.parse(localStorage.getItem("recent")).reverse().join(',');
+            rowHeadings.push('Recently viewed');
+            rowHeadings.push('Popular');
+            var randomGenres = getRandom(listOfGenres, 3);
+            for (var rgi = 0; rgi < randomGenres.length; rgi++) {
+                rowHeadings.push(randomGenres[rgi]);
+            }
+        } else {
+            rowHeadings.push('Popular');
+            var randomGenres = getRandom(listOfGenres, 4);
+            for (var rgi = 0; rgi < randomGenres.length; rgi++) {
+                rowHeadings.push(randomGenres[rgi]);
+            }
+        }
+
+
+        for (var i = 0; i < rowHeadings.length; i++) {
+            rowPage.push(1);
+            nextPrevImgNum.push(null);
             $('#data').append(
                 '<div class="next_prev" >' +
                 '<div class="tile_prev _' + i.toString() + '" data-row="' + i.toString() + '"></div> <div class="tile_next _' + i.toString() + '" data-row="' + i.toString() + '" ></div>' +
@@ -411,31 +482,54 @@ $("document").ready(function () {
             );
         }
 
-        function getRow(num, page) {
-            var api = baseAPI + '?page=' + page;
+        function getRow(num, page, cat) {
+            var api = baseAPI + 'search?search=' + cat + '&page=' + page;
+            if (cat == 'Popular') {
+                var api = baseAPI + 'search?search=&ordering=rank' + '&page=' + page;
+            } else if (cat == 'Recently viewed') {
+                var api = baseAPI + recentAPI + '?page=' + page;
+            }
+
             $.getJSON(api,
                 function (data) {
                     $.each(data['results'], function (i, value) {
-                        var redCSS = '';
                         var plusMinus = 'unchecked';
                         if (value.id in subbedObj) {
-                            redCSS = 'red-circle red-circle-tile';
                             plusMinus = 'checked';
                         }
                         $('.row__inner._' + num.toString()).append(
                             '<div class="tile">' +
                             '<div class="tile__media">' +
-                            '<img class="tile__img" src="' + value.series_art + '" alt="' + value.series_title + '" /></div>' +
+                            '<img class="tile__img" src="' + value.series_art + '" alt="' + value.series_title + '" />' +
+                            '</div>' +
                             '<div class="tile__details">' +
-                            '<a href="/' + value.slug + '"><div class="tile__title">' + value.series_title + '</div></a>' +
-                            '<div class="desc_wrap ' + value.id + '" data-subid="' + subbedObj[value.id] + '" data-plusminus="' + plusMinus + '" data-css="' + redCSS.split(' ')[0] + '" data-row="' + num.toString() + '" data-id="' + value.id + '" data-url="' + value.slug + '" data-title="' + value.series_title.replace(/"/g, '&quot;') + '" data-desc="' + value.summary.replace(/"/g, '&quot;') + '" data-released="' + value.released_year + '" data-author="' + value.author + '" data-artist="' + value.artist + '" data-genre="' + value.genre + '" data-status="' + value.status + '" data-rank="' + value.rank + '" data-rating="' + (value.rating * 59) + '" data-alternative="' + value.alternative + '" data-type="' + value.type + '" data-banner="' + value.banner + '"><div class="tile__description">' + value.summary + '</div> <div class="tile__more"></div></div>' +
-                            '<div class="alpha-centauri alpha-centauri-2"><div class="star-ratings-css tile-rating">' +
-                            '<div class="star-ratings-css-top ' + value.id + '" style="width: ' + (value.rating * 22) + '% "><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>' +
-                            '<div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div></div>' +
-                            '<span class="star-rating" data-series="' + value.id + '"><input type="radio" name="rating" value="1"><i></i><input type="radio" name="rating" value="2"><i></i><input type="radio" name="rating" value="3"><i></i><input type="radio" name="rating" value="4"><i></i><input type="radio" name="rating" value="5"><i></i></span></div>' +
+                            '<a href="/' + value.slug + '">' +
+                            '<div class="tile__title">' + value.series_title + '</div>' +
+                            '</a>' +
+                            '<div class="desc_wrap ' + value.id + '" data-subid="' + subbedObj[value.id] + '" data-plusminus="' + plusMinus + '" data-row="' + num.toString() + '" data-id="' + value.id + '" data-banner="' + value.banner + '" data-url="' + value.slug + '" data-title="' + value.series_title.replace(/"/g, '&quot;') + '" data-desc="' + value.summary.replace(/"/g, '&quot;') + '" data-released="' + value.released_year + '" data-author="' + value.author + '" data-artist="' + value.artist + '" data-genre="' + value.genre + '" data-status="' + value.status + '" data-rank="' + value.rank + '" data-rating="' + (value.rating * 59) + '" data-alternative="' + value.alternative + '" data-type="' + value.type + '" data-banner="' + value.banner + '">' +
+                            '<div class="tile__description">' + value.summary + '</div>' +
+                            '<div class="tile__more"></div>' +
+                            '</div>' +
+                            '<div class="alpha-centauri alpha-centauri-2">' +
+                            '<div class="star-ratings-css tile-rating">' +
+                            '<div class="star-ratings-css-top ' + value.id + '" style="width: ' + (value.rating * 22) + '% ">' +
+                            '<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>' +
+                            '</div>' +
+                            '<div class="star-ratings-css-bottom">' +
+                            '<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>' +
+                            '</div>' +
+                            '</div>' +
+                            '<span class="star-rating" data-series="' + value.id + '">' +
+                            '<input type="radio" name="rating" value="1"><i></i>' +
+                            '<input type="radio" name="rating" value="2"><i></i>' +
+                            '<input type="radio" name="rating" value="3"><i></i>' +
+                            '<input type="radio" name="rating" value="4"><i></i>' +
+                            '<input type="radio" name="rating" value="5"><i></i></span>' +
+                            '</div>' +
                             '<div class="tile__released" data-id="' + value.id + '">' + value.released_year + '</div>' +
-                            '<input id="subHalf' + value.id + '" type="checkbox" class="tgl tgl-flip" '+ plusMinus +'/><label data-id="' + value.id + '" data-tg-on="Sub\'d" data-tg-off="Sub!" for="subHalf' + value.id + '" class="tgl-btn tgl-tile"></label>' +
-                            '</div></div></div>'
+                            '<input id="subHalf' + value.id + '" type="checkbox" class="tgl tgl-flip" ' + plusMinus + '/><label data-id="' + value.id + '" data-tg-on="Sub\'d" data-tg-off="Sub!" for="subHalf' + value.id + '" class="tgl-btn tgl-tile"></label>' +
+                            '</div>' +
+                            '</div>'
                         ); // end append
                     }); // end for each loop
                     // TODO: Get images asynchronously
@@ -444,12 +538,18 @@ $("document").ready(function () {
 
         // var firstRowPage = 1;
         // var secondRowPage = 1;
-        var rowPage = [1, 1];
+        // var rowPage = [1, 1];
 
-        getRow(0, rowPage[0]); // Loading all the content
-        getRow(1, rowPage[1]);
+        // getRow(0, rowPage[0]); // Loading all the content
+        // getRow(1, rowPage[1]);
 
-        var nextPrevImgNum = [null, null];
+        for (var igr = 0; igr < rowHeadings.length; igr++) {
+            getRow(igr, rowPage[igr], rowHeadings[igr]); // Loading all the content
+            detectswipe('row' + igr, mobileNextPrev);
+
+        }
+
+        // var nextPrevImgNum = [null, null];
         var transitionCSS = function (num) {
             return {
                 transform: 'translateX(' + (num) + '%)',
@@ -457,34 +557,11 @@ $("document").ready(function () {
             };
         };
 
-        function mobileSwipe(row, el, d) {
-            if (d == 'l') {
-                rowPage[row] += 1;
-                getRow(row, rowPage[row]);
-                nextPrevImgNum[row] -= 55;
-                $(el).css(transitionCSS(nextPrevImgNum[row]));
-
-            } else if (d == 'r') {
-                if (nextPrevImgNum[row] < 0) {
-                    nextPrevImgNum[row] += 55;
-                    $(el).css(transitionCSS(nextPrevImgNum[row]));
-                }
-            }
-        }
-
-        function mobileNextPrev(el, d) {
-            // alert("you swiped on element with id '" + el + "' to " + d);
-            mobileSwipe(parseInt(el.split('row')[1]), '#' + el, d);
-        }
-
-        detectswipe('row0', mobileNextPrev);
-        detectswipe('row1', mobileNextPrev);
-
         // Next Prev
         $('.tile_next').click(function () {
             nextPrevImgNum[getDataAttr(this)] -= 55;
             rowPage[getDataAttr(this)] += 1;
-            getRow(getDataAttr(this), rowPage[getDataAttr(this)]);
+            getRow(getDataAttr(this), rowPage[getDataAttr(this)], rowHeadings[getDataAttr(this)]);
             $('.row._' + getDataAttr(this)).css(transitionCSS(nextPrevImgNum[getDataAttr(this)]));
         });
 
@@ -510,6 +587,8 @@ $("document").ready(function () {
                 }, 1000);
             });
 
+            var banner = $(this).data('banner');
+
             var myHTML = '<div class="shadow"></div> <div class="detailsView">' +
                 '<a href="' + $(this).data('url') + '"><h1>' + $(this).data('title').toLowerCase() + '</h1></a>' +
                 '<div class="alpha-centauri">' +
@@ -522,16 +601,15 @@ $("document").ready(function () {
                 '<div class="star-ratings-css star-ratings-css1">' +
                 '<div class="star-ratings-css-top full' + $(this).data('id') + '" style="width: ' + $(this).attr('data-rating') + '% "><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>' +
                 '<div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span><span class="detailsViewYear">' + $(this).data('released') + '</span><span class="maturity"><span>16+</span></span>' +
-                '<input id="subFull' + $(this).data('id') + '" type="checkbox" class="tgl tgl-flip" '+ $(this).attr('data-plusminus') +'/><label data-id="' + $(this).data('id') + '" data-tg-on="Sub\'d" data-tg-off="Sub!" for="subFull' + $(this).data('id') + '" class="tgl-btn tgl-full"></label></div></div></div>' +
+                '<input id="subFull' + $(this).data('id') + '" type="checkbox" class="tgl tgl-flip" ' + $(this).attr('data-plusminus') + '/><label data-id="' + $(this).data('id') + '" data-tg-on="Sub\'d" data-tg-off="Sub!" for="subFull' + $(this).data('id') + '" class="tgl-btn tgl-full"></label></div></div></div>' +
                 '<p>' + $(this).data('desc') + '</p>' +
                 '<div class="titleDetails"><div><span class="detailsLabel">Author: </span><span>' + getLinksFromCSV('autart', $(this).data('author')) + '</span>' +
                 '<span class="detailsLabel"> Artist: </span><span>' + getLinksFromCSV('autart', $(this).data('artist')) + '</span></div>' +
                 '<div><span class="detailsLabel">Genre: </span><span>' + getLinksFromCSV('genres', $(this).data('genre')) + '</span></div>' +
                 '<div><span class="detailsLabel">Status: </span><span>' + $(this).data('status') + '</span></div>' +
-                '<div><span class="detailsLabel">Rank: </span><span>' + $(this).data('rank') + '</span></div>' +
                 '<div class="altDIV"><span class="detailsLabel">Alternative: </span><span>' + $(this).data('alternative') + '</span></div>' +
                 '<div><span class="detailsLabel">Type: </span><span>' + $(this).data('type') + '</span></div></div></div>' +
-                '<div class="imageView"><div class="close" data-row="' + getDataAttr(this) + '"></div><div class="top_corner_shadow"></div><div class="bottomShadow"></div></div>';
+                '<div class="imageView" style="background-image: url(' + banner + ')"><div class="close" data-row="' + getDataAttr(this) + '"></div><div class="top_corner_shadow"></div><div class="bottomShadow"></div></div>';
 
             $('#dv' + getDataAttr(this)).html(myHTML);
         });
@@ -546,7 +624,7 @@ $("document").ready(function () {
     } // Else if  Finished ... checking url
     /*
      * =========================================
-     *          MAIN VIEW (HOMEPAGE)
+     *        END  MAIN VIEW (HOMEPAGE)
      * =========================================
      */
 
@@ -566,7 +644,7 @@ $("document").ready(function () {
                 '<td data-title="Manga"><a href="/' + subsJSON.results[i].slug + '" >' + subsJSON.results[i].title + '</a></td>' +
                 '<td style="' + redText + '" data-title="New Chapters">' + subsJSON.results[i].new_chapters + '</td>' +
                 '<td data-title="Status">' +
-                '<input id="subFull' + value.series_id + '" type="checkbox" class="tgl tgl-flip" '+ 'checked' +'/><label data-id="' + value.series_id + '" data-id="' + $(this).data('id') + '" data-tg-on="Sub\'d" data-tg-off="Sub!" for="subFull' + $(this).data('id') + '" class="tgl-btn tgl-full subs-page"></label>' +
+                '<input id="subFull' + value.series_id + '" type="checkbox" class="tgl tgl-flip" ' + 'checked' + '/><label data-id="' + value.series_id + '" data-id="' + $(this).data('id') + '" data-tg-on="Sub\'d" data-tg-off="Sub!" for="subFull' + $(this).data('id') + '" class="tgl-btn tgl-full subs-page"></label>' +
                 '</td>' +
                 '</tr>'
         }
@@ -597,6 +675,7 @@ $("document").ready(function () {
         navigation();
         scrollBaby();
         $('#wrap').css('margin', '0 auto 80px');
+        $('.footer').hide()
     }
 
     $(document).on('click', '#nav-icon1', function () {
@@ -615,6 +694,12 @@ $("document").ready(function () {
         $('.logo, .auth-links, .user, .search-toggle, #notification_li').hide();
         $('#nav-icon1').toggleClass('open').addClass('hamburger');
         $('.form-wrapper').show();
+    });
+
+    $(document).on('mouseover', '.alpha-centauri', function () {
+        if (navigator.appVersion.indexOf("Win") != -1) {
+            $('.star-rating.full').css({"margin-left": "1.6rem", "margin-top": "0.3rem"})
+        }
     });
 
 });
@@ -926,4 +1011,49 @@ function detectswipe(el, func) {
         }
         direc = "";
     }, false);
+}
+
+function getRandom(arr, n) {
+    var result = new Array(n),
+        len = arr.length,
+        taken = new Array(len);
+    if (n > len)
+        throw new RangeError("getRandom: more elements taken than available");
+    while (n--) {
+        var x = Math.floor(Math.random() * len);
+        result[n] = arr[x in taken ? taken[x] : x];
+        taken[x] = --len;
+    }
+    return result;
+}
+
+var listOfGenres = ['Action', 'Adult', 'Adventure', 'Award winning', 'Comedy', 'Cooking', 'Demons', 'Doujinshi', 'Drama', 'Ecchi', 'Fantasy', 'Gender bender', 'Harem', 'Historical', 'Horror', 'Josei', 'Magic', 'Martial arts', 'Mature', 'Mecha', 'Medical', 'Music', 'Mystery', 'One shot', 'Psychological', 'Romance', 'School life', 'Sci fi', 'Seinen', 'Shoujo', 'Shoujo ai', 'Shounen', 'Shounen ai', 'Slice of life', 'Smut', 'Sports', 'Supernatural', 'Tragedy', 'Webtoon', 'Yaoi', 'Yuri'];
+
+function mobileSwipe(row, el, d) {
+    if (d == 'l') {
+        rowPage[row] += 1;
+        getRow(row, rowPage[row], rowHeadings[row]);
+        nextPrevImgNum[row] -= 55;
+        $(el).css(transitionCSS(nextPrevImgNum[row]));
+
+    } else if (d == 'r') {
+        if (nextPrevImgNum[row] < 0) {
+            nextPrevImgNum[row] += 55;
+            $(el).css(transitionCSS(nextPrevImgNum[row]));
+        }
+    } else if (d == 'u') {
+        $('html,body').animate({
+                scrollTop: $(el).offset().top
+            },
+            'slow');
+    } else if (d = 'd') {
+        $('html,body').animate({
+                scrollTop: $(el).offset().top - $(el).height()
+            },
+            'slow');
+    }
+}
+
+function mobileNextPrev(el, d) {
+    mobileSwipe(parseInt(el.split('row')[1]), '#' + el, d);
 }
