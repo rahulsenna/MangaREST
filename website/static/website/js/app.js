@@ -214,67 +214,72 @@ $("document").ready(function () {
                 navigation();
                 scrollBaby();
 
-                var pageHTML = '<div class="marginToNav">' +
+                var pageHTML = '' +
                     '<div class="breadcrumbs">' +
                     '<span class="breadcrumbLink"><a href="/' + data.slug + '">' + data.series_title.substr(0, 50) + '</a> </span>' +
                     '<span class="breadcrumbText"> / ' + CHAPTER + '</span>' +
                     '</div>' +
                     '<div class="comic_nav"><label class="lbl"> Pages </label>' +
-                    '<select id="selectPageState">' +
+                    '<select class="selectPageState">' +
                     '<option value="0" >One page</option>' +
                     '<option value="1" selected="selected">All pages</option></select>' +
                     '<label class="lbl"> Chapter </label>' +
-                    '<select id="selectChapter">';
+                    '<select class="selectChapter">';
                 $.each(data['chapters_set'].reverse(), function (i, value) {
                     if (value.slug == SLUG) {
-                        pageHTML += '<option selected="selected" value="' + value.id + '">' + value.chapter_title + '</option>';
+                        pageHTML += '<option selected="selected" value="' + value.slug + '">' + value.chapter_title + '</option>';
                     } else {
                         pageHTML += '<option value="' + value.slug + '">' + value.chapter_title + '</option>';
                     }
                 });
 
-                pageHTML += '</select><span class="btn prev_page"></span><label class="lbl lblSP lblSP1"> Page </label><select id="selectPage" style="width: 50px">';
+                pageHTML += '</select><span class="btn prev_page"></span><label class="lbl lblSP lblSP1"> Page </label>' +
+                    '<select class="selectPage" style="width: 50px">';
 
-                for (img in images) {
-                    pageHTML += '<option value="' + img + '">' + (parseInt(img) + 1) + '</option>';
+                for (var imgNum = 0; imgNum < images.length; imgNum++) {
+                    pageHTML += '<option value="' + imgNum + '">' + (parseInt(imgNum) + 1) + '</option>';
                 }
 
                 pageHTML += '</select><label class="lbl lblSP"> of ' + images.length + ' Pages' + '</label><span class="btn next_page"></span></div></div>';
-                $('#data').append(pageHTML)
+                $('#data').append('<div class="marginToNav">' +
+                    pageHTML +
+                    '<div class="comic_view"></div>' +
+                    pageHTML
+                );
 
                 // When opening page with anchor tag
                 if (currentPageUrl.match(/\#(\d+)/)) {
-                    $('#selectPage').val(parseInt(currentPageUrl.match(/\#(\d+)/)[1]) - 1)
+                    $('.selectPage').val(parseInt(currentPageUrl.match(/\#(\d+)/)[1]) - 1)
                     localStorage.setItem('onePage', true);
                 }
 
                 // On Change new chapter will open
-                $('#selectChapter').change(function () {
-                    window.location.href = $("#selectChapter option:selected").val();
+                $('.selectChapter').change(function () {
+                    window.location.href = $(this).val();
                 });
 
-                $('#data').append('<div class="comic_view"></div>');
+                // $('#data').append('<div class="comic_view"></div>');
 
                 function showComicPage() {
 
                     if (localStorage.getItem('onePage') === 'true') {
-                        $('.comic_view').html('<img alt="' + (data.series_title + ' : ' + $("#selectChapter option:selected").text() + ' at MangaNites.com') + '" src="' + images[$('#selectPage').val()] + '">');
-                        $('#selectPageState').val('0');
-                        $('#selectPage, .lblSP, .btn').show();
+                        $('.comic_view').html('<img alt="' + (data.series_title + ' : ' + $(".selectChapter option:selected").text() + ' at MangaNites.com') + '" src="' + images[$('.selectPage').val()] + '">');
+                        $('.selectPageState').val('0');
+                        $('.selectPage, .lblSP, .btn').show();
 
                         // Changing url according to page
                         if (currentPageUrl.match(/\#(\d+)/)) {
-                            window.location.href = currentPageUrl.replace(currentPageUrl.match(/\#(\d+)/)[0], '#' + (parseInt($('#selectPage').val()) + 1))
+                            window.location.href = currentPageUrl.replace(currentPageUrl.match(/\#(\d+)/)[0], '#' + (parseInt($('.selectPage').val()) + 1))
                         } else {
-                            window.location.href = currentPageUrl + '#' + (parseInt($('#selectPage').val()) + 1);
+                            window.location.href = currentPageUrl + '#' + (parseInt($('.selectPage').val()) + 1);
                         }
                     } else {
                         var imgHTML = '';
                         for (img in images) {
-                            imgHTML += '<img alt="' + (data.series_title + ' : ' + $("#selectChapter option:selected").text() + ' at MangaNites.com') + '" src="' + images[img] + '">';
+                            imgHTML += '<img alt="' + (data.series_title + ' : ' + $(".selectChapter option:selected").text() + ' at MangaNites.com') + '" src="' + images[img] + '">';
                         }
                         $('.comic_view').html(imgHTML);
-                        $('#selectPage, .lblSP, .btn').hide();
+                        $('.selectPage, .lblSP').hide();
                     }
                 }
 
@@ -283,17 +288,23 @@ $("document").ready(function () {
 
                 // Clicking Next Prev Page
                 function clPvPg() {
-                    if (parseInt($('#selectPage').val()) > 0) {
-                        $('#selectPage').val(parseInt($('#selectPage').val()) - 1);
-                        $('#selectPage').change();
+                    // Changing page
+                    if (parseInt($('.selectPage').val()) > 0 && localStorage.getItem('onePage') === 'true') {
+                        $('.selectPage').val(parseInt($('.selectPage').val()) - 1);
+                        $('.selectPage').change();
+
+                        // Changing chapter
+                    } else if ($(".selectChapter option:selected").next().val()) {
+                        window.location.href = $(".selectChapter option:selected").next().val();
                     }
                 }
 
                 function clNxPg() {
-                    if (parseInt($('#selectPage').val()) < (images.length - 1)) {
-                        $('#selectPage').val(parseInt($('#selectPage').val()) + 1);
-                        $('#selectPage').change();
-                        console.log(images.length, $('#selectPage').val());
+                    if (parseInt($('.selectPage').val()) < (images.length - 1) && localStorage.getItem('onePage') === 'true') {
+                        $('.selectPage').val(parseInt($('.selectPage').val()) + 1);
+                        $('.selectPage').change();
+                    } else if ($(".selectChapter option:selected").prev().val()) {
+                        window.location.href = $(".selectChapter option:selected").prev().val();
                     }
                 }
 
@@ -306,7 +317,7 @@ $("document").ready(function () {
 
                 $(document).keydown(function (e) {
                     var sl = $(this).scrollLeft();
-                    console.log('st: ' + sl +' $(window).width() : ' + $(window).width() + ' $(document).width(): ' + $(document).width());
+                    console.log('st: ' + sl + ' $(window).width() : ' + $(window).width() + ' $(document).width(): ' + $(document).width());
                     if (e.keyCode == 37 && sl == 0 && localStorage.getItem('onePage') === 'true') {
                         clPvPg();
                         return false;
@@ -319,12 +330,13 @@ $("document").ready(function () {
 
 
                 // Turning Page
-                $('#selectPage').change(function () {
+                $('.selectPage').change(function () {
+                    $('.selectPage').val($(this).val());
                     showComicPage();
                 });
                 // Chaing page state
-                $('#selectPageState').change(function () {
-                    if ($('#selectPageState').val() == 0) {
+                $('.selectPageState').change(function () {
+                    if ($(this).val() == 0) {
                         localStorage.setItem('onePage', true);
                     } else {
                         localStorage.setItem('onePage', false);
