@@ -801,7 +801,8 @@ input[type="submit"]:focus, input[type="submit"]:active {
   cursor default
 
 .imageView
-  background url("http://popcorntv.it/uploads/files/slider/24-08-2015-one_piece.jpg") center no-repeat
+  background-position center
+  background-repeat no-repeat
   background-size cover
   height 100%
   width 70%
@@ -958,10 +959,10 @@ input[type="submit"]:focus, input[type="submit"]:active {
 .comic_nav, .breadcrumbs
   margin-left: 26vw;
 
-.comic_view
+#comic_view
   margin-top 5%
 
-.comic_view img
+#comic_view img
   display block
   margin-left auto
   margin-right auto
@@ -972,18 +973,19 @@ input[type="submit"]:focus, input[type="submit"]:active {
 .lblSP1
   margin-left 27px
 
-#selectChapter
+.selectChapter
   width 200px
 
 .prev_page
   position absolute
   width 33px
   height 13px
-  background url("../assets/more.pn1063g") no-repeat 0% 0%
+  background url("../assets/more.png") no-repeat 0% 0%
   myTransform(rotate(90deg))
 
 .next_page
   position absolute
+  margin-left 20px
   width 33px
   height 13px
   background url("../assets/more.png") no-repeat 0% 0%
@@ -1331,6 +1333,91 @@ input[type="submit"]:focus, input[type="submit"]:active {
   margin-left 0.5rem
 }
 
+.footer {
+  color: #e9414e;
+  background-color: #b9c6d4;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+  //width: 100%;
+  text-align: left;
+  font: bold 16px sans-serif;
+  padding: 10px 55px;
+}
+
+#footer-logo {
+  width: 158px;
+  height: 102px;
+  background: url('http://manga.monadajewel.com/static/website/assets/logoRed.png') no-repeat;
+}
+
+.footer .footer-left,
+.footer .footer-center,
+.footer .footer-right {
+  display: inline-block;
+  vertical-align: top;
+}
+
+/* Footer left */
+
+.footer .footer-left {
+  width: 40%;
+}
+
+/* The company logo */
+
+.footer .footer-company-name {
+  color: #8f9296;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Footer Center */
+
+.footer .footer-center {
+  width: 35%;
+}
+
+.footer .footer-center p {
+  margin: 0px 50px;
+}
+
+.footer .footer-center p a {
+  color: #5383d3;
+  text-decoration: none;
+}
+
+.footer .footer-right {
+  width: 21%;
+}
+
+.footer .footer-icons {
+  margin-top: 25px;
+}
+
+.selectPageDiv, .selectChapDiv, .nextPrevDiv {
+  padding: 2px;
+  display: inline;
+}
+
+@media (max-width: 880px) {
+  .footer {
+    font: bold 14px sans-serif;
+  }
+
+  .footer .footer-left,
+  .footer .footer-center,
+  .footer .footer-right {
+    display: block;
+    width: 100%;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .footer .footer-center i {
+    margin-left: 0;
+  }
+}
+
 @media only screen and (max-width: 1000px) {
   .comic_nav {
     margin-left: 18vw;
@@ -1406,8 +1493,16 @@ input[type="submit"]:focus, input[type="submit"]:active {
     margin-left: -100px;
   }
 
-  .comic_view img {
-    width: 99.4vw;
+  #comic_view img {
+    width: 99vw;
+  }
+
+  #comic_view {
+    margin-top: 50px;
+  }
+
+  .lblSP, .selectPage {
+    margin-top: 13px;
   }
 
   .comic_nav, .breadcrumbs {
@@ -1432,7 +1527,7 @@ input[type="submit"]:focus, input[type="submit"]:active {
     position: absolute;
     bottom: 0;
     padding: 2px;
-    padding-top: 0%;
+    padding-top: 100%;
     margin-bottom: -20px;
     font-size: 10px;
     font-weight: 500;
@@ -1448,16 +1543,6 @@ input[type="submit"]:focus, input[type="submit"]:active {
     padding-top: 0%;
     margin-top: 232px;
 
-  }
-
-  .tile-circle {
-    color: #000;
-    border: #000 3px solid;
-  }
-
-  .tile-circle:hover {
-    color: #fff;
-    background: #000;
   }
 
   .tile-rating, .tile__released {
@@ -1616,16 +1701,9 @@ input[type="submit"]:focus, input[type="submit"]:active {
     font-size: 12px;
   }
 
-  #selectChapter, #selectPageState {
-    width: 12%;
-  }
-
-  .comic_nav {
-    font-size: 10px;
-  }
-
-  .lblSP {
-    font-size: 10px;
+  .selectPageDiv, .selectChapDiv, .nextPrevDiv {
+    padding: 2px;
+    display: block;
   }
 
   .shadow {
@@ -1634,6 +1712,11 @@ input[type="submit"]:focus, input[type="submit"]:active {
 
   .imageView {
     background url("")
+  }
+
+  .star-rating.full {
+    margin-left: 22px;
+    margin-top: 0rem;
   }
 
 }
@@ -1708,6 +1791,13 @@ input[type="submit"]:focus, input[type="submit"]:active {
 
   .altDIV {
     width: 88vw;
+  }
+
+}
+
+@media only screen and (max-width: 325px) {
+  .auth-links a:link {
+    font-size: 11px;
   }
 
 }
