@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import filters
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
@@ -40,6 +41,12 @@ class SeriesUpdate(generics.UpdateAPIView):
     serializer_class = SeriesSerializers
     permission_classes = (permissions.IsAdminUser,)
 
+    def get_object(self):
+        return get_object_or_404(
+            self.get_queryset(),
+            slug=self.kwargs.get('slug')
+        )
+
 
 class ChapterCreate(generics.CreateAPIView):
     queryset = Chapters.objects.all()
@@ -56,8 +63,17 @@ class RatingsCreate(generics.CreateAPIView):
 class SearchView(generics.ListAPIView):
     queryset = Series.objects.all()
     serializer_class = SearchSerializers
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('series_title', 'alternative', 'author')
+
+    def get_queryset(self):
+        keyword = self.request.GET.get('search', '')
+        q = Series.objects.filter(
+            Q(series_title__icontains=keyword) | Q(alternative__icontains=keyword) | Q(
+                author__icontains=keyword)).extra(
+            select={'matched': "series_title = '{}'".format(keyword)})
+        q = q.extra(order_by=['-matched'])
+        q.distinct()
+
+        return q
 
 
 class SearchList(generics.ListAPIView):
@@ -66,3 +82,14 @@ class SearchList(generics.ListAPIView):
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     search_fields = ('series_title', 'alternative', 'author', 'artist', 'genre', 'released_year', 'rating', 'status')
     ordering_fields = ('series_title', 'rank')
+
+
+class RecentSeries(generics.ListAPIView):
+    queryset = Series.objects.all()
+    serializer_class = SeriesSerializers
+
+    def get_queryset(self):
+        id_list = list(map(int, self.kwargs.get('list').split(',')))
+        objects = Series.objects.in_bulk(id_list)
+        sorted_objects = [objects[id] for id in id_list]
+        return sorted_objects
