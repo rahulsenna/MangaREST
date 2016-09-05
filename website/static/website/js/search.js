@@ -100,7 +100,7 @@ var searchHTML = '<section class="search marginToNav">' +
     '<td>' +
     '<ul name="genres" class="genres opt-item triploid">' +
     '<li>' +
-    '<span rel="4-koma" class="either" hidefocus="true">4 koma</span>' +
+    '<span rel="4 koma" class="either" hidefocus="true">4 koma</span>' +
     '</li>' +
     '<li>' + '<span rel="action" class="either" hidefocus="true">Action</span>' +
     '</li>' +
@@ -171,7 +171,7 @@ var searchHTML = '<section class="search marginToNav">' +
     '<span rel="mystery" class="either" hidefocus="true">Mystery</span>' +
     '</li>' +
     '<li>' +
-    '<span rel="one-shot" class="either" hidefocus="true">One shot</span>' +
+    '<span rel="one shot" class="either" hidefocus="true">One shot</span>' +
     '</li>' +
     '<li>' +
     '<span rel="psychological" class="either" hidefocus="true">Psychological</span>' +
@@ -180,10 +180,10 @@ var searchHTML = '<section class="search marginToNav">' +
     '<span rel="romance" class="either" hidefocus="true">Romance</span>' +
     '</li>' +
     '<li>' +
-    '<span rel="school-life" class="either" hidefocus="true">School life</span>' +
+    '<span rel="school life" class="either" hidefocus="true">School life</span>' +
     '</li>' +
     '<li>' +
-    '<span rel="sci-fi" class="either" hidefocus="true">Sci fi</span>' +
+    '<span rel="sci fi" class="either" hidefocus="true">Sci fi</span>' +
     '</li>' +
     '<li>' +
     '<span rel="seinen" class="either" hidefocus="true">Seinen</span>' +
@@ -192,16 +192,16 @@ var searchHTML = '<section class="search marginToNav">' +
     '<span rel="shoujo" class="either" hidefocus="true">Shoujo</span>' +
     '</li>' +
     '<li>' +
-    '<span rel="shoujo-ai" class="either" hidefocus="true">Shoujo ai</span>' +
+    '<span rel="shoujo ai" class="either" hidefocus="true">Shoujo ai</span>' +
     '</li>' +
     '<li>' +
     '<span rel="shounen" class="either" hidefocus="true">Shounen</span>' +
     '</li>' +
     '<li>' +
-    '<span rel="shounen-ai" class="either" hidefocus="true">Shounen ai</span>' +
+    '<span rel="shounen ai" class="either" hidefocus="true">Shounen ai</span>' +
     '</li>' +
     '<li>' +
-    '<span rel="slice-of-life" class="either" hidefocus="true">Slice of life</span>' +
+    '<span rel="slice of life" class="either" hidefocus="true">Slice of life</span>' +
     '</li>' +
     '<li>' +
     '<span rel="smut" class="either" hidefocus="true">Smut</span>' +
@@ -364,6 +364,10 @@ $(document).ready(function () {
             }
 
             $('.manga-list').append(searchResult);
+
+            // DISQUS    // DISQUS
+    $('#data').append(disqusHTML);
+            $('#data').append(disqusHTML);
 
 
             /* * * * * * * * * * * * * * * * *
@@ -548,6 +552,7 @@ $(document).ready(function () {
                 init(1);
             }
         });
+
 
 });
 

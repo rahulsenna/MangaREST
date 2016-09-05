@@ -359,6 +359,9 @@ input[type="submit"]:focus, input[type="submit"]:active {
 
 .forgot-pass
   margin-left: 9rem;
+  & a:link, a:hover, a:active {
+    color $bgColor
+  }
 
 .form-error
   color red
@@ -1026,6 +1029,7 @@ input[type="submit"]:focus, input[type="submit"]:active {
   myTransform(translate3d($moveRight, 0, 0))
 
 .infinity
+  background url('../assets/loading.gif') no repeat
   position absolute
   display none
   width 110px
@@ -1347,7 +1351,7 @@ input[type="submit"]:focus, input[type="submit"]:active {
 #footer-logo {
   width: 158px;
   height: 102px;
-  background: url('http://manga.monadajewel.com/static/website/assets/logoRed.png') no-repeat;
+  background: url('../assets/logoRed.png') no-repeat;
 }
 
 .footer .footer-left,

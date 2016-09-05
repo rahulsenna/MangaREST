@@ -20,6 +20,7 @@ class ChaptersSetSerializers(serializers.ModelSerializer):
             'slug',
             'chapter_title',
             'chapter_date',
+            'chapter_index'
         )
 
 
@@ -43,7 +44,6 @@ class SeriesSerializers(serializers.ModelSerializer):
             'genre',
             'series_art',
             'status',
-            'rank',
             'rating',
             'alternative',
             'type',
@@ -67,7 +67,6 @@ class SeriesDetailSerializers(serializers.ModelSerializer):
             'genre',
             'series_art',
             'status',
-            'rank',
             'rating',
             'alternative',
             'type',

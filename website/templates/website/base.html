@@ -2,16 +2,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" href="{% static 'website/assets/favicon.ico' %}" type="image/x-icon" />
     <meta name="viewport" content="width=device-width">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
 
     {% block title %}{% endblock %}
+    {% block meta %}{% endblock %}
     {% block script %}{% endblock %}
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="{% static 'website/styles/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'website/styles/main.min.css' %}">
     {% block css %}{% endblock %}
-    <script src="{% static 'website/js/jquery-3.0.0.js' %}"></script>
-    <script src="{% static 'website/js/app.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="{% static 'website/js/app.min.js' %}"></script>
     {% block js %}{% endblock %}
 
     <noscript>Please enable JavaScript.</noscript>

@@ -3,6 +3,23 @@
 {% block script %}
     <script>
         var PAGE = 'TITLE';
-        var API = 'http://127.0.0.1:8000/api/v1/series/{{ title.id }}/';
+        var API = '/api/v1/series/{{ title.id }}/';
     </script>
+    <meta property="fb:app_id" content="279655529086992">
+    <meta property="og:site_name" content="MangaNites.com">
+    <meta property="og:url"
+          content="http://manganites.com/{{ title.slug }}"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="{{ title.title }}"/>
+    <meta property="og:description" content="{{ title.desc }}"/>
+    <meta property="og:image"
+          content="{{ title.series_art }}"/>
+
+    <meta name="twitter:site" content="@manganites">
+    <meta name="twitter:image" content="{{ title.series_art }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="@manganites">
+    <meta name="twitter:title" content="{{ title.title }}">
+    <meta name="twitter:description"
+          content="{{ title.desc }}">
 {% endblock %}

@@ -43,7 +43,7 @@ function scrollBaby() {
 }
 /*     END -- Nav Bar Hide on scroll function -- END     */
 
-var disqusHTML = '<div id="disqus_thread"></div><script>(function() {var d = document, s = d.createElement(\'script\');s.src = \'//mangatanga.disqus.com/embed.js\';s.setAttribute(\'data-timestamp\', +new Date());(d.head || d.body).appendChild(s);})();</script>';
+var disqusHTML = '<div id="disqus_thread"></div><script>(function() {var d = document, s = d.createElement(\'script\');s.src = \'//manganites.disqus.com/embed.js\';s.setAttribute(\'data-timestamp\', +new Date());(d.head || d.body).appendChild(s);})();</script>';
 var footerHTML = '<footer class="footer">' +
     '<div class="footer-left">' +
     '<div id="footer-logo"></div>' +
@@ -143,7 +143,7 @@ $("document").ready(function () {
 
             var srchHTML = '<form action="/search/" method="get" class="form-wrapper cf"><input type="text" name="q" autocomplete="off" onkeyup="showResult(this.value)" placeholder="Search..." required><button type="submit">Search</button></form><div id="livesearch"></div>';
 
-            $('body').append('<div class="infinity"><img src="/static/website/assets/loading.gif"></div>' +
+            $('body').append('<div class="infinity"></div>' +
                 '<header class="nav-down">' +
                 '<ul class="nav-ul">' +
                 '<li><a class="logo" href="/"><img src="/static/website/assets/logoRed.png" alt="Manga Nites logo"></a></li>' +
@@ -219,10 +219,14 @@ $("document").ready(function () {
                         '<span class="breadcrumbLink"><a href="/' + data.slug + '">' + data.series_title.substr(0, 50) + '</a> </span>' +
                         '<span class="breadcrumbText"> / ' + CHAPTER + '</span>' +
                         '</div>' +
-                        '<div class="comic_nav"><label class="lbl"> Pages </label>' +
+                        '<div class="comic_nav">' +
+                        '<div class="selectPageDiv">' +
+                        '<label class="lbl"> Pages </label>' +
                         '<select class="selectPageState">' +
                         '<option value="0" >One page</option>' +
                         '<option value="1" selected="selected">All pages</option></select>' +
+                        '</div>' +
+                        '<div class="selectChapDiv">' +
                         '<label class="lbl"> Chapter </label>' +
                         '<select class="selectChapter">';
                     $.each(data['chapters_set'].reverse(), function (i, value) {
@@ -233,14 +237,17 @@ $("document").ready(function () {
                         }
                     });
 
-                    pageHTML += '</select><span class="btn prev_page"></span><label class="lbl lblSP lblSP1"> Page </label>' +
+                    pageHTML += '</select></div>' +
+                        '<div class="nextPrevDiv"><span class="btn prev_page"></span><label class="lbl lblSP lblSP1"> Page </label>' +
                         '<select class="selectPage" style="width: 50px">';
 
                     for (var imgNum = 0; imgNum < images.length; imgNum++) {
                         pageHTML += '<option value="' + imgNum + '">' + (parseInt(imgNum) + 1) + '</option>';
                     }
 
-                    pageHTML += '</select><label class="lbl lblSP"> of ' + images.length + ' Pages' + '</label><span class="btn next_page"></span></div></div>';
+                    pageHTML += '</select><label class="lbl lblSP"> of ' + images.length + ' Pages' + '</label>' +
+                        '<span class="btn next_page"></span></div>' +
+                        '</div></div>';
                     $('#data').append('<div class="marginToNav">' +
                         pageHTML +
                         '<div id="comic_view"></div>' +
@@ -314,26 +321,16 @@ $("document").ready(function () {
                     $('.next_page').on('click', function () {
                         clNxPg();
                     });
-                    detectswipe('comic_view', function (el, d) {
-                        if (d == 'l') {
+                    document.getElementById('comic_view').addEventListener('swl', comicSwipe, false);
+                    document.getElementById('comic_view').addEventListener('swr', comicSwipe, false);
+
+                    function comicSwipe(e) {
+                        if (e.type == 'swl') {
                             clNxPg();
-                        } else if (d == 'r') {
+                        } else if (e.type == 'swr') {
                             clPvPg();
                         }
-                        else if (d == 'u') {
-                            el.scrollTop = 100;
-                            // console.log($(el).offset());
-                            // $('html,body').animate({
-                            //         scrollTop: $(el).offset().top
-                            //     },
-                            //     'slow');
-                        } else if (d = 'd') {
-                            $('html,body').animate({
-                                    scrollTop: $(el).offset().top - $(el).height()
-                                },
-                                'slow');
-                        }
-                    });
+                    }
 
                     $(document).keydown(function (e) {
                         var sl = $(this).scrollLeft();
@@ -369,7 +366,8 @@ $("document").ready(function () {
                     // Disquss
                     $('#data').append(disqusHTML);
                     $('body').append('<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52ead56257068c9a"></script>');
-                });
+                }
+            );
 
         } // End Chapter View
         /*
@@ -568,16 +566,8 @@ $("document").ready(function () {
                     });
             }
 
-            // var firstRowPage = 1;
-            // var secondRowPage = 1;
-            // var rowPage = [1, 1];
-
-            // getRow(0, rowPage[0]); // Loading all the content
-            // getRow(1, rowPage[1]);
-
             for (var igr = 0; igr < rowHeadings.length; igr++) {
                 getRow(igr, rowPage[igr], rowHeadings[igr]); // Loading all the content
-                // detectswipe('row' + igr, mobileNextPrev);
                 document.getElementById('row' + igr).addEventListener('swl', h, false);
                 document.getElementById('row' + igr).addEventListener('swr', h, false);
             }
@@ -598,7 +588,6 @@ $("document").ready(function () {
                 }
             }
 
-            // var nextPrevImgNum = [null, null];
             var transitionCSS = function (num) {
                 return {
                     transform: 'translateX(' + (num) + '%)',
