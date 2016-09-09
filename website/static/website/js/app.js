@@ -2,7 +2,8 @@
 function scrollBaby() {
     var didScroll;
     var lastScrollTop = 0;
-    var delta = 120;
+    var lastScrollDown = 0;
+    var delta = 1;
     var navbarHeight = $('header').outerHeight();
 
     $(window).scroll(function (event) {
@@ -11,35 +12,42 @@ function scrollBaby() {
 
     setInterval(function () {
         if (didScroll) {
-            hasScrolled();
+            scrollLittle();
+            scrollAlot();
             didScroll = false;
         }
     }, 250);
 
-    function hasScrolled() {
+    function scrollLittle() {
         var st = $(this).scrollTop();
 
-        // Make sure they scroll more than delta
         if (Math.abs(lastScrollTop - st) <= delta)
             return;
 
-        // If they scrolled down and are past the navbar, add class .nav-up.
-        // This is necessary so you never see what is "behind" the navbar.
         if (st > lastScrollTop && st > navbarHeight) {
-            // Scroll Down
+
             $('header').removeClass('nav-down').addClass('nav-up');
-        } else {
-            // Scroll Up
-            if (st + $(window).height() < $(document).height()) {
-                $('header').removeClass('nav-up').addClass('nav-down').addClass('nav-black-bg');
-            }
         }
 
         lastScrollTop = st;
         if (lastScrollTop === 0) {
-            $('header').removeClass('nav-black-bg');
+            $('header').removeClass('nav-black-bg').removeClass('nav-up').addClass('nav-down');
         }
     }
+
+    function scrollAlot() {
+        var sd = $(this).scrollTop();
+
+        if (Math.abs(lastScrollDown - sd) <= 700)
+            return;
+
+        if (sd + $(window).height() < $(document).height() && sd < lastScrollDown) {
+            $('header').removeClass('nav-up').addClass('nav-down').addClass('nav-black-bg');
+        }
+
+        lastScrollDown = sd;
+    }
+
 }
 /*     END -- Nav Bar Hide on scroll function -- END     */
 
@@ -62,11 +70,11 @@ var footerHTML = '<footer class="footer">' +
     '</div>' +
     '<div class="footer-right">' +
     '<div class="footer-icons">' +
-    '<a href="http://facebook.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/facebook.png"></a>' +
-    '<a href="http://twitter.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/twitter.png"></a>' +
-    '<a href="http://plus.google.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/google_plus.png"></a>' +
-    '<a href="http://instagram.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/instagram.png"></a>' +
-    '<a href="http://pinterest.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/pinterest.png"></a>' +
+    '<a target="_blank" href="http://facebook.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/facebook.png"></a>' +
+    '<a target="_blank" href="http://twitter.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/twitter.png"></a>' +
+    '<a target="_blank" href="http://plus.google.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/google_plus.png"></a>' +
+    '<a target="_blank" href="http://instagram.com/manga.nites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/instagram.png"></a>' +
+    '<a target="_blank" href="http://pinterest.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/pinterest.png"></a>' +
     '</div>' +
     '</div>' +
     '</footer>';
@@ -205,7 +213,6 @@ $("document").ready(function () {
          * =========================================
          */
         if (PAGE == 'CHAPTER') {
-            var images = $.parseJSON(IMAGES.split("&#39;").join('"'));
             $.getJSON(API,
                 function (data) {
                     // Header
@@ -241,11 +248,11 @@ $("document").ready(function () {
                         '<div class="nextPrevDiv"><span class="btn prev_page"></span><label class="lbl lblSP lblSP1"> Page </label>' +
                         '<select class="selectPage" style="width: 50px">';
 
-                    for (var imgNum = 0; imgNum < images.length; imgNum++) {
+                    for (var imgNum = 0; imgNum < IMAGES.length; imgNum++) {
                         pageHTML += '<option value="' + imgNum + '">' + (parseInt(imgNum) + 1) + '</option>';
                     }
 
-                    pageHTML += '</select><label class="lbl lblSP"> of ' + images.length + ' Pages' + '</label>' +
+                    pageHTML += '</select><label class="lbl lblSP"> of ' + IMAGES.length + ' Pages' + '</label>' +
                         '<span class="btn next_page"></span></div>' +
                         '</div></div>';
                     $('#data').append('<div class="marginToNav">' +
@@ -270,7 +277,7 @@ $("document").ready(function () {
                     function showComicPage() {
 
                         if (localStorage.getItem('onePage') === 'true') {
-                            $('#comic_view').html('<img alt="' + (data.series_title + ' : ' + $(".selectChapter option:selected").text() + ' at MangaNites.com') + '" src="' + images[$('.selectPage').val()] + '">');
+                            $('#comic_view').html('<img alt="' + (data.series_title + ' : ' + $(".selectChapter option:selected").text() + ' at MangaNites.com') + '" src="' + IMAGES[$('.selectPage').val()] + '">');
                             $('.selectPageState').val('0');
                             $('.selectPage, .lblSP, .btn').show();
 
@@ -281,13 +288,28 @@ $("document").ready(function () {
                                 window.location.href = currentPageUrl + '#' + (parseInt($('.selectPage').val()) + 1);
                             }
                         } else {
-                            var imgHTML = '';
-                            for (img in images) {
-                                imgHTML += '<img alt="' + (data.series_title + ' : ' + $(".selectChapter option:selected").text() + ' at MangaNites.com') + '" src="' + images[img] + '">';
+
+                            function loadImage(index) {
+                                var image = new Image()
+                                image.onload = function () {
+                                    index++;
+                                    if (index < IMAGES.length) {
+                                        loadImage(index);
+                                    }
+                                };
+                                image.onerror = function () {
+                                    //better handle this
+                                };
+                                image.src = IMAGES[index];
+                                image.alt = data.series_title + ' : ' + $(".selectChapter option:selected").text() + ' at MangaNites.com';
+                                $('#comic_view').append(image);
                             }
-                            $('#comic_view').html(imgHTML);
+
+                            loadImage(0);
+
                             $('.selectPage, .lblSP').hide();
                         }
+
                     }
 
                     // Initial image load
@@ -307,7 +329,7 @@ $("document").ready(function () {
                     }
 
                     function clNxPg() {
-                        if (parseInt($('.selectPage').val()) < (images.length - 1) && localStorage.getItem('onePage') === 'true') {
+                        if (parseInt($('.selectPage').val()) < (IMAGES.length - 1) && localStorage.getItem('onePage') === 'true') {
                             $('.selectPage').val(parseInt($('.selectPage').val()) + 1);
                             $('.selectPage').change();
                         } else if ($(".selectChapter option:selected").prev().val()) {
@@ -325,16 +347,16 @@ $("document").ready(function () {
                     document.getElementById('comic_view').addEventListener('swr', comicSwipe, false);
 
                     function comicSwipe(e) {
-                        if (e.type == 'swl') {
+                        if (e.type == 'swl' && localStorage.getItem('onePage') === 'true') {
                             clNxPg();
-                        } else if (e.type == 'swr') {
+                        } else if (e.type == 'swr' && localStorage.getItem('onePage') === 'true') {
                             clPvPg();
                         }
                     }
 
                     $(document).keydown(function (e) {
                         var sl = $(this).scrollLeft();
-                        console.log('st: ' + sl + ' $(window).width() : ' + $(window).width() + ' $(document).width(): ' + $(document).width());
+                        // console.log('st: ' + sl + ' $(window).width() : ' + $(window).width() + ' $(document).width(): ' + $(document).width());
                         if (e.keyCode == 37 && sl == 0 && localStorage.getItem('onePage') === 'true') {
                             clPvPg();
                             return false;
@@ -1024,7 +1046,7 @@ function getRandom(arr, n) {
     return result;
 }
 
-var listOfGenres = ['Action', 'Adult', 'Adventure', 'Award winning', 'Comedy', 'Cooking', 'Demons', 'Doujinshi', 'Drama', 'Ecchi', 'Fantasy', 'Gender bender', 'Harem', 'Historical', 'Horror', 'Josei', 'Magic', 'Martial arts', 'Mature', 'Mecha', 'Medical', 'Music', 'Mystery', 'One shot', 'Psychological', 'Romance', 'School life', 'Sci fi', 'Seinen', 'Shoujo', 'Shoujo ai', 'Shounen', 'Shounen ai', 'Slice of life', 'Smut', 'Sports', 'Supernatural', 'Tragedy', 'Webtoon', 'Yaoi', 'Yuri'];
+var listOfGenres = ['Action', 'Adult', 'Adventure', 'Comedy', 'Cooking', 'Demons', 'Doujinshi', 'Drama', 'Ecchi', 'Fantasy', 'Gender bender', 'Harem', 'Historical', 'Horror', 'Josei', 'Magic', 'Martial arts', 'Mature', 'Mecha', 'Medical', 'Music', 'Mystery', 'One shot', 'Psychological', 'Romance', 'School life', 'Sci fi', 'Seinen', 'Shoujo', 'Shoujo ai', 'Shounen', 'Shounen ai', 'Slice of life', 'Smut', 'Sports', 'Supernatural', 'Tragedy', 'Webtoon', 'Yaoi', 'Yuri'];
 
 
 window.onload = function () {
@@ -1066,10 +1088,7 @@ window.onload = function () {
             d.addEventListener(a, touch[a], false);
         }
     })(document);
-//EXAMPLE OF USE
-//     var h = function (e) {
-//         console.log(e.type, e)
-//     };
+
     document.body.addEventListener('fc', h, false);// 0-50ms vs 500ms with normal click
     document.body.addEventListener('swl', h, false);
     document.body.addEventListener('swr', h, false);
