@@ -70,14 +70,15 @@ var footerHTML = '<footer class="footer">' +
     '</div>' +
     '<div class="footer-right">' +
     '<div class="footer-icons">' +
-    '<a target="_blank" href="http://facebook.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/facebook.png"></a>' +
-    '<a target="_blank" href="http://twitter.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/twitter.png"></a>' +
-    '<a target="_blank" href="http://plus.google.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/google_plus.png"></a>' +
-    '<a target="_blank" href="http://instagram.com/manga.nites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/instagram.png"></a>' +
-    '<a target="_blank" href="http://pinterest.com/manganites"><img src="http://manga.monadajewel.com/static/website/assets/social/black/pinterest.png"></a>' +
+    '<a target="_blank" href="http://facebook.com/manganites"><img src="http://manganites.com/static/website/assets/social/black/facebook.png"></a>' +
+    '<a target="_blank" href="http://twitter.com/manganites"><img src="http://manganites.com/static/website/assets/social/black/twitter.png"></a>' +
+    '<a target="_blank" href="http://plus.google.com/manganites"><img src="http://manganites.com/static/website/assets/social/black/google_plus.png"></a>' +
+    '<a target="_blank" href="http://instagram.com/manga.nites"><img src="http://manganites.com/static/website/assets/social/black/instagram.png"></a>' +
+    '<a target="_blank" href="http://pinterest.com/manganites"><img src="http://manganites.com/static/website/assets/social/black/pinterest.png"></a>' +
     '</div>' +
     '</div>' +
     '</footer>';
+
 var siteTitle = 'Manga Nites';
 var baseAPI = '/api/v1/series/';
 
@@ -151,7 +152,7 @@ $("document").ready(function () {
 
             var srchHTML = '<form action="/search/" method="get" class="form-wrapper cf"><input type="text" name="q" autocomplete="off" onkeyup="showResult(this.value)" placeholder="Search..." required><button type="submit">Search</button></form><div id="livesearch"></div>';
 
-            $('body').append('<div class="infinity"></div>' +
+            $('body').append('' +
                 '<header class="nav-down">' +
                 '<ul class="nav-ul">' +
                 '<li><a class="logo" href="/"><img src="/static/website/assets/logoRed.png" alt="Manga Nites logo"></a></li>' +
@@ -177,7 +178,7 @@ $("document").ready(function () {
                 '<ul><li class="errors"></li></ul>' +
                 '<div class="randompad">' +
                 '<fieldset><label name="email">Email</label>' +
-                '<input type="email" id="emailLog" value="example@example.com" />' +
+                '<input type="email" id="emailLog" placeholder="example@example.com" />' +
                 '<label name="password">Password</label><input type="password" id="passwordLog" />' +
                 '<input type="submit" value="Login" id="login-button" /></fieldset>' +
                 '<a href="/users/password/reset/" class="forgot-pass">Forgot Password</a>' +
@@ -188,7 +189,7 @@ $("document").ready(function () {
                 '<ul><li class="errors"></li></ul>' +
                 '<div class="randompad">' +
                 '<fieldset><label name="email">Email</label>' +
-                '<input type="email" id="emailReg" value="example@example.com" />' +
+                '<input type="email" id="emailReg" placeholder="example@example.com" />' +
                 '<label name="password">Password</label><input type="password" id="passwordReg" />' +
                 '<input name="first_name" type="hidden">' +
                 '<input type="submit" value="Register" id="reg-button" /></fieldset>' +
@@ -202,10 +203,12 @@ $("document").ready(function () {
             ;
         }
 
-        var pathname = window.location.pathname; // Returns path only
         var currentPageUrl = window.location.href;     // Returns full URL
-        console.log(pathname, currentPageUrl);
 
+        // Navigation
+        navigation();
+        scrollBaby();
+        $('#infinity').hide();
 
         /*
          * =========================================
@@ -217,12 +220,10 @@ $("document").ready(function () {
                 function (data) {
                     // Header
                     $('head').append('<title>' + CHAPTER.substr(0, 30) + ' | ' + data.series_title.substr(0, 20) + ' - ' + siteTitle + '</title>');
-                    // Navigation
-                    navigation();
-                    scrollBaby();
 
                     var pageHTML = '' +
                         '<div class="breadcrumbs">' +
+                        '<span class="breadcrumbHome"><a href="/">HOME</a> / </span>' +
                         '<span class="breadcrumbLink"><a href="/' + data.slug + '">' + data.series_title.substr(0, 50) + '</a> </span>' +
                         '<span class="breadcrumbText"> / ' + CHAPTER + '</span>' +
                         '</div>' +
@@ -263,7 +264,7 @@ $("document").ready(function () {
 
                     // When opening page with anchor tag
                     if (currentPageUrl.match(/\#(\d+)/)) {
-                        $('.selectPage').val(parseInt(currentPageUrl.match(/\#(\d+)/)[1]) - 1)
+                        $('.selectPage').val(parseInt(currentPageUrl.match(/\#(\d+)/)[1]) - 1);
                         localStorage.setItem('onePage', true);
                     }
 
@@ -290,7 +291,7 @@ $("document").ready(function () {
                         } else {
 
                             function loadImage(index) {
-                                var image = new Image()
+                                var image = new Image();
                                 image.onload = function () {
                                     index++;
                                     if (index < IMAGES.length) {
@@ -403,11 +404,8 @@ $("document").ready(function () {
                 function (data) {
                     // Header
                     $('head').append('<title>' + data.series_title + ' - ' + siteTitle + '</title>');
-                    // Navigation
-                    navigation();
-                    scrollBaby();
-                    // Body
 
+                    // Body
                     var plusMinus = 'unchecked';
                     if (data.id in subbedObj) {
                         plusMinus = 'checked';
@@ -492,9 +490,6 @@ $("document").ready(function () {
          */
         else if (PAGE == 'HOME') {
 
-            // Header
-            navigation();
-            scrollBaby();
             // Body
             var rowPage = [];
             var nextPrevImgNum = [];
@@ -525,9 +520,9 @@ $("document").ready(function () {
                     '<div class="next_prev" >' +
                     '<div class="tile_prev _' + i.toString() + '" data-row="' + i.toString() + '"></div> <div class="tile_next _' + i.toString() + '" data-row="' + i.toString() + '" ></div>' +
                     ' </div> ' +
+                    '<h4 class="row-heading">' + rowHeadings[i] + '</h4>' +
                     '<div class="contain _' + i.toString() + '">' +
                     '<div class="row _' + i.toString() + '">' +
-                    '<h4 class="row-heading">' + rowHeadings[i] + '</h4>' +
                     '<div class="row__inner _' + i.toString() + '" id="row' + i.toString() + '" data-row="' + i.toString() + '">' +
                     '</div> </div> </div>' +
                     '<div class="fullview" id="dv' + i.toString() + '"></div>'
@@ -689,9 +684,6 @@ $("document").ready(function () {
          */
 
         else if (PAGE == 'SUBS') {
-            // Navigation
-            navigation();
-            scrollBaby();
 
             var tds = '';
             for (i in subsJSON.results) {
@@ -732,8 +724,6 @@ $("document").ready(function () {
             $('#data').append(subsHTML);
         }
         else {
-            navigation();
-            scrollBaby();
             $('#wrap').css('margin', '0 auto 80px');
             $('.footer').hide()
         }
@@ -769,13 +759,6 @@ $("document").ready(function () {
  *          END DOCUMENT.READY()
  * =========================================
  */
-
-
-$(document).ajaxStart(function () {
-    $('.infinity').show();
-}).ajaxStop(function () {
-    $('.infinity').hide();
-});
 
 $(document).on('click', ':radio',
     function () {
@@ -864,7 +847,7 @@ function loginReg(logReg, url, userEmail) {
             })
             .fail(function (data) {
                 var emailErrors = data.responseJSON.email;
-                var non_field_errors = data.responseJSON.non_field_errors
+                var non_field_errors = data.responseJSON.non_field_errors;
                 var errorsHTML = '';
                 if (emailErrors) {
                     for (inum in emailErrors) {
@@ -1011,7 +994,7 @@ function showResult(str) {
 }
 
 function showSnackbar(message) {
-    var x = document.getElementById("snackbar")
+    var x = document.getElementById("snackbar");
     x.innerHTML = message;
     x.className = "show";
     setTimeout(function () {
@@ -1046,9 +1029,6 @@ function getRandom(arr, n) {
     return result;
 }
 
-var listOfGenres = ['Action', 'Adult', 'Adventure', 'Comedy', 'Cooking', 'Demons', 'Doujinshi', 'Drama', 'Ecchi', 'Fantasy', 'Gender bender', 'Harem', 'Historical', 'Horror', 'Josei', 'Magic', 'Martial arts', 'Mature', 'Mecha', 'Medical', 'Music', 'Mystery', 'One shot', 'Psychological', 'Romance', 'School life', 'Sci fi', 'Seinen', 'Shoujo', 'Shoujo ai', 'Shounen', 'Shounen ai', 'Slice of life', 'Smut', 'Sports', 'Supernatural', 'Tragedy', 'Webtoon', 'Yaoi', 'Yuri'];
-
-
 window.onload = function () {
     (function (d) {
         var
@@ -1077,7 +1057,6 @@ window.onload = function () {
                             ce(e, (xr > yr ? (x < 0 ? 'swl' : 'swr') : (y < 0 ? 'swu' : 'swd')))
                         }
                     }
-                    ;
                     nm = true
                 },
                 touchcancel: function (e) {
@@ -1088,10 +1067,6 @@ window.onload = function () {
             d.addEventListener(a, touch[a], false);
         }
     })(document);
+};
 
-    document.body.addEventListener('fc', h, false);// 0-50ms vs 500ms with normal click
-    document.body.addEventListener('swl', h, false);
-    document.body.addEventListener('swr', h, false);
-    document.body.addEventListener('swu', h, false);
-    document.body.addEventListener('swd', h, false);
-}
+var listOfGenres = ['Action', 'Adult', 'Adventure', 'Comedy', 'Cooking', 'Demons', 'Doujinshi', 'Drama', 'Ecchi', 'Fantasy', 'Gender bender', 'Harem', 'Historical', 'Horror', 'Josei', 'Magic', 'Martial arts', 'Mature', 'Mecha', 'Medical', 'Music', 'Mystery', 'One shot', 'Psychological', 'Romance', 'School life', 'Sci fi', 'Seinen', 'Shoujo', 'Shoujo ai', 'Shounen', 'Shounen ai', 'Slice of life', 'Smut', 'Sports', 'Supernatural', 'Tragedy', 'Webtoon', 'Yaoi', 'Yuri'];

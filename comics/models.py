@@ -13,7 +13,7 @@ class Series(models.Model):
     slug = AutoSlugField(null=True, max_length=50, default=None, unique=True, populate_from='series_title')
     summary = models.TextField(blank=True, default=None)
     released_year = models.CharField(max_length=20, blank=True, default=None)
-    author = models.CharField(max_length=100, blank=True, default=None)
+    author = models.CharField(max_length=1000, blank=True, default=None)
     artist = models.CharField(max_length=1000, blank=True, default=None)
     genre = models.CharField(max_length=500, blank=True, default=None)
     series_art = models.CharField(max_length=1000, blank=True, default=None)

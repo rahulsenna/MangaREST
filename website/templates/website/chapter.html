@@ -6,6 +6,6 @@
         var API = '/api/v1/series/{{ title.id }}/';
         var CHAPTER = '{{ title.ch_title }}';
         var SLUG = '{{ title.slug }}';
-        var IMAGES = "{{ title.images }}";
+        var IMAGES = {{ title.images|safe }};
     </script>
 {% endblock %}

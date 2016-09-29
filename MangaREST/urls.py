@@ -43,9 +43,3 @@ urlpatterns = [
         name='django.contrib.sitemaps.views.sitemap'),
 
 ]
-
-for i in range(15):
-    urlpatterns.append(url(r'^sitemap_chapters{}\.xml$'.format(i), sitemap,
-                           {'sitemaps': {'chapters': GenericSitemap(get_chapters_dict(i * 20000, (i + 1) * 20000),
-                                                                    priority=0.8)}},
-                           name='django.contrib.sitemaps.views.sitemap'), )
