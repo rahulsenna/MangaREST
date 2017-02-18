@@ -9,20 +9,22 @@ from accounts.models import Subscription
 
 
 class Series(models.Model):
-    series_title = models.CharField(max_length=500)
-    slug = AutoSlugField(null=True, max_length=50, default=None, unique=True, populate_from='series_title')
+    series_title = models.CharField(max_length=10000)
+    slug = AutoSlugField(null=True, max_length=50, default=None, unique=True,
+                         populate_from='series_title')
     summary = models.TextField(blank=True, default=None)
     released_year = models.CharField(max_length=20, blank=True, default=None)
-    author = models.CharField(max_length=1000, blank=True, default=None)
-    artist = models.CharField(max_length=1000, blank=True, default=None)
-    genre = models.CharField(max_length=500, blank=True, default=None)
-    series_art = models.CharField(max_length=1000, blank=True, default=None)
+    author = models.CharField(max_length=10000, blank=True, default=None)
+    artist = models.CharField(max_length=10000, blank=True, default=None)
+    genre = models.CharField(max_length=10000, blank=True, default=None)
+    series_art = models.CharField(max_length=10000, blank=True, default=None)
     status = models.CharField(max_length=250, blank=True, default=None)
     rank = models.IntegerField(null=False, blank=False, default=30000)
     rating = models.FloatField(default=0)
-    alternative = models.CharField(max_length=2000, blank=True, default=None)
-    type = models.CharField(max_length=500)
-    banner = models.CharField(null=True, blank=True, default=None, max_length=1000)
+    alternative = models.CharField(max_length=10000, blank=True, default=None)
+    type = models.CharField(max_length=10000)
+    banner = models.CharField(null=True, blank=True, default=None,
+                              max_length=10000)
 
     def __str__(self):
         return self.series_title
